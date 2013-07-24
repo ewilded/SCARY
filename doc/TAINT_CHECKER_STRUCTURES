@@ -1,0 +1,42 @@
+## THESE NOTES CONTAIN THE FINAL TAINT CHECKING MECHANISM STRUCTURES USED IN SCARY
+## $final_call_vulnerable{xss}{f1::$a}=($vline1,$vline2,...) ## by default $vline is the curr_local_virtual_line_number, if the final_call_vuln takes place in the same namespace, in this example 1,3
+## $secured{'xss'}{f1::$a}=($vline1,$vline2,...) # in this example it's 2,4
+## where $vline* is curr_local_virtual_line_number for its original namespace (f1 in this case)
+# Now, what happens when f1($_GET['a']) is called (how final_call_vulnerable shall be merged):
+# $final_call_vulnerable{xss}{$_GET['a']}=
+#(
+# mapped_from_vline,mapped_to_addr,mapped_to_vline,...
+#)
+# in this case:
+# $final_call_vulnerable{xss}{$_GET['a']}=
+# (
+#	  (mapped_from_vline=>9,mapped_to_varaddr=>f1::$a, mapped_to_vline=>2)
+#	  (mapped_from_vline=>9,mapped_to_varaddr=>f1::$a, mapped_to_vline=>4)
+#   (mapped_from_vline=>11,mapped_to_varaddr=>f1::$a, mapped_to_vline=>2)
+#   (mapped_from_vline=>11,mapped_to_varaddr=>f1::$a,mapped_to_vline=>4)
+# )
+#
+# $secured{xss}{$_GET['a']}=
+# (
+#  9,f1::$a,3
+#  9,f1::$a,5
+# 11
+# 12,f1::$a,3
+# 12,f1::$a,5
+# )
+## Now, what happens if we have additional dimension of a f2's flow:
+
+## $secured{'sql'}{f2::$b}=(2)
+## after merge:
+## $secured{'sql'}{f1::$a}=6,f2::$b,2
+## after merge with tainted $_GET['a'] we'll have additional record:
+## $secured{'sql'}{$_GET['a']}=14,f1::$a,6
+## Ok, it looks good.
+## We also have to verify that final_call_vulnerable merging algorithm is compatible with this solution. Ok, it appears to.
+# Additional record to secured is an eraser (erase the current history without unsetting it) - ok, eraser can be just appended to the last vline after - sign.
+# Referenced version differs only in the fact, that secured{} record affects original value also in the original namespace's vline
+# API:
+# set_final_call_vulnerable($bug_type,$var_addr,$mapped_from_vline,$mapped_to_varaddr,$mapped_to_vline,$code,$code_trace,$external_is_tainted)
+# secure_var($bug_group,$durability,$mapped_from_varaddr,$mapped_from_vline,$mapped_to_varaddr,$mapped_to_vline)
+
+# Bug calculation algorithm: we take one of the variables from final_call_vulnerable and search for any earlier secured, if it's not there, we got it, then move on to the next one.

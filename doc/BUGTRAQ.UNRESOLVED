@@ -1,0 +1,1220 @@
+UNRESOLVED:
+        
+This one looks like an SQL (addslashes on cookie var with no '' quotes :>)
+         
+[0m[1;31m[SQL]
+Ok, jest SQL injection, umozliwia jakis tam DoS, ale nic ciekawszego.
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/tickets/data/process_edit_ticket.php:7:         $sql = "SELECT * FROM tickets WHERE id = '$ticket_id'";
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/tickets/data/process_edit_ticket.php:6:         $ticket_id = $_GET['id'];
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/tickets/data/process_edit_ticket.php:44:                                $sql = "INSERT INTO tickets_log (ticket_id, user_id, data, date, time) VALUES ("
+
+1;31m[XSS]
+         [XSS]/home/scary/victims//vfront-0.96c-112-10-18/vfront-0.96c/admin/../inc/func.comuni.php:318:                         return "<a class=\"$class desc\" href=\"".$_SERVER['PHP_SELF']."?gid=".$_GET['gid']."&amp;ord=$ord&amp;sort=a\" $title>$etichetta</a>";
+         
+(SESSION POISONING REQUIRED)
+[0m[1;31m[EXEC]
+         [EXEC]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:16:       $path = mysql_result($p_result, $p_i, "path");
+         [EXEC]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:8:$p_result = mysql_query($p_sql);
+         [EXEC]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:7:$p_sql = "SELECT * FROM mods WHERE type = '1' AND parent = 'none' AND acl <= '$_SESSION[user_acl]' AND enabled = '1' AND name != 'end_user' ORDER BY weight";
+         [EXEC]/home/scary/victims//BETA_1-112-10-18/index.php:19:       $path = $result['path'];
+         [EXEC]/home/scary/victims//BETA_1-112-10-18/index.php:24:               include 'mods/'.$path;
+[0m[1;31m[SQL]
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:20:        $ck_sql = "SELECT * FROM mods WHERE parent = '$name' AND type = '1' AND acl <= '$_SESSION[user_acl]' AND enabled = '1' ORDER BY weight";
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:14:        $name = mysql_result($p_result, $p_i, "name");
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:8:$p_result = mysql_query($p_sql);
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:7:$p_sql = "SELECT * FROM mods WHERE type = '1' AND parent = 'none' AND acl <= '$_SESSION[user_acl]' AND enabled = '1' AND name != 'end_user' ORDER BY weight";
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:21:        $ck_result = mysql_query($ck_sql);
+ [0m[1;31m[SQL]
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:7:$p_sql = "SELECT * FROM mods WHERE type = '1' AND parent = 'none' AND acl <= '$_SESSION[user_acl]' AND enabled = '1' AND name != 'end_user' ORDER BY weight";
+         [SQL]/home/scary/victims//BETA_1-112-10-18/mods/menu/top.php:8:$p_result = mysql_query($p_sql);
+         
+         
+[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/setup/index.php:37:$sPage = 'welcome';
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/setup/index.php:38:if ( isset( $_REQUEST['page'] ) ) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/setup/index.php:39:   $sPage = $_REQUEST['page'];
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/setup/index.php:48:   $sPage = 'error-alreadysetup';
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/setup/index.php:52:   $sPage = 'error-nowriteaccess';
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/setup/setup.tpl.php:115:                      include( 'pages/'.$sLanguage.'/'.$sPage.'.inc.php' );
+
+
+ [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/vendor/ExtJS/examples/feed-viewer/feed-proxy.php:3:$feed = $_REQUEST['feed'];
+         [FOPEN]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/vendor/ExtJS/examples/feed-viewer/feed-proxy.php:4:if($feed != '' && strpos($feed, 'http') === 0){
+         [FOPEN]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-core/vendor/ExtJS/examples/feed-viewer/feed-proxy.php:6:    $xml = file_get_contents($feed);
+         
+[XSS]
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_debug.php:25:$rss = fetch_rss( $url );
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_debug.php:15:if ( isset($_GET['url']) ) {
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_debug.php:16:  $url = $_GET['url'];
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_debug.php:19:  $url = 'http://magpierss.sf.net/test.rss';
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_debug.php:50:<?php var_dump($rss); ?>
+  [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_slashbox.php:21:       $rss = fetch_rss( $url );
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_slashbox.php:6:$url = $_GET['rss_url'];
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_slashbox.php:22:       echo slashbox ($rss);
+  [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_slashbox.php:21:       $rss = fetch_rss( $url );
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_slashbox.php:6:$url = $_GET['rss_url'];
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_slashbox.php:26:print_r($rss);
+  [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_slashbox.php:6:$url = $_GET['rss_url'];
+         [XSS]/home/scary/victims//BlueSpice-free-1.20.0-beta2-112-10-18/bluespice-mw/ext-dist/RSS-Topdate/scripts/magpie_slashbox.php:20:       echo "displaying: $url<p>";
+
+
+[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/report-userlookup.php:20:              $lookupname = isset($_REQUEST["lookupname"])?$_REQUEST["lookupname"]:"";
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/report-userlookup.php:78:                      $records = mysql_query("SELECT * FROM reservations,rooms WHERE reservations.username='". $lookupname ."' AND reservations.roomid = rooms.roomid". $orderbystr .";");
+
+        [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/report-userlookup.php:9:       elseif($_SESSION["isadministrator"] != "TRUE" && $_SESSION["isreporter"] != "TRUE"){
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/report-userlookup.php:51:<?php echo ($_SESSION["isadministrator"] == "TRUE")?"<span class=\"isadministrator\">(Admin)</span>&nbsp;":""; echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(Reporter)</span>&nbsp;":""; ?>|&nbsp;<a href="../index.php">Public View</a>&nbsp;|&nbsp;<a href="../modules/logout.php">Logout</a></div>
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/report-userlookup.php:51:<?php echo ($_SESSION["isadministrator"] == "TRUE")?"<span class=\"isadministrator\">(Admin)</span>&nbsp;":""; echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(Reporter)</span>&nbsp;":""; ?>|&nbsp;<a href="../index.php">Public View</a>&nbsp;|&nbsp;<a href="../modules/logout.php">Logout</a></div>
+  [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/defaulthours.php:112: echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(Reporter)</span>&nbsp;":""; ?>|&nbsp;<a href="../index.php">Public View</a>&nbsp;|&nbsp;<a href="../modules/logout.php">Logout</a></div>
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/defaulthours.php:112: echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(Reporter)</span>&nbsp;":""; ?>|&nbsp;<a href="../index.php">Public View</a>&nbsp;|&nbsp;<a href="../modules/logout.php">Logout</a></div>
+  [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/defaulthours.php:26:                           $roomhoursid = isset($_REQUEST["roomhoursid"])?$_REQUEST["roomhoursid"]:"";
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/admin/defaulthours.php:27:                           if(mysql_query("DELETE FROM roomhours WHERE roomhoursid=". $roomhoursid .";")){
+  [0m [1;31m[XSS]
+  
+[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/../or-reserve.php:7:$username = isset($_SESSION["username"])?$_SESSION["username"]:"";
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/../or-reserve.php:13:if($username != ""){
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/../or-reserve.php:26:       $altusername = (isset($_POST["altusername"])?$_POST["altusername"]:"");
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/../or-reserve.php:343:                      if($altusername != ""){
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/../or-reserve.php:344:                              $username = $altusername;
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/../or-reserve.php:423:                                              $emailrecord = mysql_query("SELECT * FROM users WHERE username='". $username ."';");
+
+[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/or-dbinfo.php:30:foreach($_POST as $key=>$value){
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/mobile.php:111:                     $room_info = mysql_query("SELECT * FROM rooms WHERE roomid = ". $_POST["roomid"] .";");
+
+[XSS] (html inject)
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/mobile.php:6:       $op = isset($_POST["op"])?$_POST["op"]:"";
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/includes/../or-reserve.php:370:                                                              $opt_res = mysql_query("INSERT INTO reservationoptions VALUES('". $opt_name ."','". $reservationid ."','". $fixedofvalue ."');");
+         
+         
+ [1;31m[SQL]
+ 
+         [SQL]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/editaccount.php:26:                                  $encpass = sha1($password);
+         [SQL]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/editaccount.php:16:                  $password = isset($_POST["password"])?$_POST["password"]:"";
+         [SQL]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/editaccount.php:20:                  if($password != "" || $confirm != ""){
+         [SQL]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/editaccount.php:17:                  $confirm = isset($_POST["confirm"])?$_POST["confirm"]:"";
+         [SQL]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/editaccount.php:21:                          if($password != $confirm){
+         [SQL]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/editaccount.php:17:                  $confirm = isset($_POST["confirm"])?$_POST["confirm"]:"";
+         [SQL]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/editaccount.php:31:                          $encpass = $emaila["password"];
+         [SQL]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/editaccount.php:40:                          if(mysql_query("UPDATE users SET password = '". $encpass ."', email = '". $email ."' WHERE username='". $_SESSION["username"] ."';")){
+
+
+ [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/mobile/content.php:2: $op = $_GET["op"];
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/mobile/content.php:156:                                                               echo $optional_field["optionquestion"] 
+
+Session poison
+ [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/favourites.queries.php:13:include('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/favourites.queries.php:13:include('../includes/language/'.$_SESSION['user_language'].'.php');
+  
+  auth bypass + session poison       
+      [1;31m[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/desktop/header.php:18: echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;":"";
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/desktop/header.php:18: echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;":"";
+  [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/desktop/header.php:18:                                echo isset($_SESSION["username"])?"<strong>Logged in as</strong>: ". $_SESSION["username"]:"&nbsp;"; ?></span>&nbsp;<?php echo ($_SESSION["isadministrator"] == "TRUE")?"<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;":""; echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;":"";
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/desktop/header.php:18:                                echo isset($_SESSION["username"])?"<strong>Logged in as</strong>: ". $_SESSION["username"]:"&nbsp;"; ?></span>&nbsp;<?php echo ($_SESSION["isadministrator"] == "TRUE")?"<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;":""; echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;":"";
+  [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/desktop/header.php:18:<?php echo ($_SESSION["isadministrator"] == "TRUE")?"<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;":""; echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;":"";
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/desktop/header.php:18:<?php echo ($_SESSION["isadministrator"] == "TRUE")?"<span class=\"isadministrator\">(<a href=\"admin/index.php\">Admin</a>)</span>&nbsp;":""; echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;":"";
+  [0m [1;31m[XSS]
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/desktop/header.php:18: echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;":"";
+         [XSS]/home/scary/victims//OpenRoom1-4-1-112-10-18/OpenRoom/themes/default/desktop/header.php:18: echo ($_SESSION["isreporter"] == "TRUE")?"<span class=\"isreporter\">(<a href=\"admin/index.php\">Reporter</a>)</span>&nbsp;":"";    
+    
+    
+ [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/folders.queries.php:12:include('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/folders.queries.php:12:include('../includes/language/'.$_SESSION['user_language'].'.php');
+ [EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/folders.queries.php:12:include('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/folders.queries.php:12:include('../includes/language/'.$_SESSION['user_language'].'.php');
+  [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/admin.queries.php:11:include('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/admin.queries.php:11:include('../includes/language/'.$_SESSION['user_language'].'.php');
+ [EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/admin.queries.php:11:include('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/admin.queries.php:11:include('../includes/language/'.$_SESSION['user_language'].'.php');
+  [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/users.queries.php:14:require_once('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/users.queries.php:14:require_once('../includes/language/'.$_SESSION['user_language'].'.php');
+ [EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/users.queries.php:14:require_once('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/users.queries.php:14:require_once('../includes/language/'.$_SESSION['user_language'].'.php');
+  [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/items.queries.php:12:require_once('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/items.queries.php:12:require_once('../includes/language/'.$_SESSION['user_language'].'.php');
+ [EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/items.queries.php:12:require_once('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/items.queries.php:12:require_once('../includes/language/'.$_SESSION['user_language'].'.php');
+  [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/roles.queries.php:13:include('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/roles.queries.php:13:include('../includes/language/'.$_SESSION['user_language'].'.php');
+ [EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/roles.queries.php:13:include('../includes/language/'.$_SESSION['user_language'].'.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/sources/roles.queries.php:13:include('../includes/language/'.$_SESSION['user_language'].'.php');
+  [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/kb.php:13:require_once('includes/language/'.$_SESSION['user_language'].'_kb.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/kb.php:13:require_once('includes/language/'.$_SESSION['user_language'].'_kb.php');
+  [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/kb.php:13:require_once('includes/language/'.$_SESSION['user_language'].'_kb.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/kb.php:13:require_once('includes/language/'.$_SESSION['user_language'].'_kb.php');
+  [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/folders.php:12:require_once('includes/language/'.$_SESSION['user_language'].'_admin_help.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/folders.php:12:require_once('includes/language/'.$_SESSION['user_language'].'_admin_help.php');
+ [EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/folders.php:12:require_once('includes/language/'.$_SESSION['user_language'].'_admin_help.php');
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/folders.php:12:require_once('includes/language/'.$_SESSION['user_language'].'_admin_help.php');
+  [0m [1;31m[EXEC-NULLBYTE_REQUIRED]
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:7:      if (!isset($_SESSION['user_language']) && !isset($_COOKIE['user_language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:8:              if (isset($_POST['language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:9:                      $_SESSION['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:12:                     $_SESSION['user_language'] = "english";
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:8:              if (isset($_POST['language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:9:                      $_SESSION['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:10:                     $_COOKIE['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:16:             if (isset($_POST['language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:17:                     $_SESSION['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:20:                     $_SESSION['user_language'] = $_COOKIE['user_language'];
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:8:              if (isset($_POST['language'])) {
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:9:                      $_SESSION['user_language'] = filter_var($_POST['language'], FILTER_SANITIZE_STRING);
+         [EXEC-NULLBYTE_REQUIRED]/home/scary/victims//cpassman_1.82-112-10-18/cpassman/index.php:10:                     $_COOKIE['user_language'] = filter_var($_POST['language'
+         
+  [0m [1;31m[SQL]
+         [SQL]/home/scary/victims//pika_forum-112-10-18/forum/master_set.php:5:if(isset($_COOKIE['forum_n0pr082']))
+         [SQL]/home/scary/victims//pika_forum-112-10-18/forum/master_set.php:6:  $pid = $_COOKIE['forum_n0pr082'];
+         [SQL]/home/scary/victims//pika_forum-112-10-18/forum/top.php:26:$resulti = mysql_query( "SELECT * FROM profiles_lf2713 WHERE auth='$pid'" );
+  [0m [1;31m[SQL]
+         [SQL]/home/scary/victims//pika_forum-112-10-18/forum/master_set.php:26:$header = $_POST['header'];
+         [SQL]/home/scary/victims//pika_forum-112-10-18/forum/master_set.php:29:mysql_query( "UPDATE general_lf2713 SET header='$header' WHERE id='1'" );
+  [0m [1;31m[SQL]
+         [SQL]/home/scary/victims//pika_forum-112-10-18/forum/master_set.php:27:$html = $_POST['code'];
+         [SQL]/home/scary/victims//pika_forum-112-10-18/forum/master_set.php:30:mysql_query( "UPDATE topbottom_lf2713 SET html='$html' WHERE id='1'" );
+
+Looks very nice (adodb required however, authentication required as well, however it looks big)
+[SHELL]
+         [SHELL]/home/scary/victims//openqrm-community-5.0-112-10-17/openqrm-community-5.0/src/plugins/cloud/web/class/cloudsoap.class.php:606:          $openqrm_server_command="htpasswd -D $CloudDir/user/.htpasswd $clouduser_name";
+         [SHELL]/home/scary/victims//openqrm-community-5.0-112-10-17/openqrm-community-5.0/src/plugins/cloud/web/class/cloudsoap.class.php:18:$RootDir = $_SERVER["DOCUMENT_ROOT"].'/openqrm/base/';
+         [SHELL]/home/scary/victims//openqrm-community-5.0-112-10-17/openqrm-community-5.0/src/plugins/cloud/web/class/cloudsoap.class.php:19:$CloudDir = $_SERVER["DOCUMENT_ROOT"].'/cloud-portal/';
+         [SHELL]/home/scary/victims//openqrm-community-5.0-112-10-17/openqrm-community-5.0/src/plugins/cloud/web/class/cloudsoap.class.php:609:          $openqrm_server_command="htpasswd -b $CloudDir/user/.htpasswd $clouduser_name $clouduser_password";
+         [SHELL]/home/scary/victims//openqrm-community-5.0-112-10-17/openqrm-community-5.0/src/plugins/cloud/web/class/cloudsoap.class.php:18:$RootDir = $_SERVER["DOCUMENT_ROOT"].'/openqrm/base/';
+         [SHELL]/home/scary/victims//openqrm-community-5.0-112-10-17/openqrm-community-5.0/src/plugins/cloud/web/class/cloudsoap.class.php:19:$CloudDir = $_SERVER["DOCUMENT_ROOT"].'/cloud-portal/';
+         [SHELL]/home/scary/victims//openqrm-community-5.0-112-10-17/openqrm-community-5.0/src/plugins/cloud/web/class/cloudsoap.class.php:610:          $output = shell_exec($openqrm_server_command);
+
+
+WHAT ABOUT WALLCITY?
+
+
+				[EVAL-REGISER_GLOBALS_REQUIRED]
+        			[EVAL-REGISER_GLOBALS_REQUIRED]/home/acid/src/Perl/DiveInferno/victims//molinos-cms-11.09.15-stable/lib/Molinos/Node/pakefile.php:341:  $t = new Molinos_Database_Transaction();
+        			[EVAL-REGISER_GLOBALS_REQUIRED]/home/acid/src/Perl/DiveInferno/victims//molinos-cms-11.09.15-stable/lib/Molinos/Node/pakefile.php:353:  if (!is_array($data = eval($text)))
+
+Requires 5.2
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/classes/actions.php:51:parse::$_REQUEST['action']:include(DIR_MODULES . 'actions/' . $_REQUEST['action'] . '.php');
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/classes/actions.php:51:parse::$_REQUEST['action']:include(DIR_MODULES . 'actions/' . $_REQUEST['action'] . '.php');
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/modules/boxes/boxModuleOptions.php:83:loadModule::$method:include_once($method['file']);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/modules/boxes/boxModuleOptions.php:83:loadModule::$method:include_once($method['file']);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/libraries/utils/btv_Template.php:614:$data_box:include_once($data_box);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/libraries/utils/btv_Template.php:614:$data_box:include_once($data_box);
+batavi-1.2.2.AUTO_SCARY.log:[CALL] if(DEBUG_EXECUTION_DISPLAY == '1') param status unknown!!
+batavi-1.2.2.AUTO_SCARY.log:[CALL] if(DEBUG_EXECUTION_DISPLAY == '1') param status unknown!!
+batavi-1.2.2.AUTO_SCARY.log:[REGISTER] registered new regular variable $debug_enabled= (DEBUG_EXECUTION_DISPLAY == '1') ||
+batavi-1.2.2.AUTO_SCARY.log:$debug_enabled=> (DEBUG_EXECUTION_DISPLAY == '1') ||
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/includes/application_top.php:216:$box_path:require_once($box_path);
+batavi-1.2.2.AUTO_SCARY.log:[CALL] case('EXECUTIVE': {$format = array(521.86,756.00)) param status unknown!!
+batavi-1.2.2.AUTO_SCARY.log:[CALL] const(PAPERSIZE_EXECUTIVE                                            = 7) param status unknown!!
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/admin/ext/tiny_mce/plugins/ajaxfilemanager/inc/config.php:64:$configBaseFileName:require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . $configBaseFileName);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/admin/ext/tiny_mce/plugins/ajaxfilemanager/inc/config.php:64:$configBaseFileName:require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . $configBaseFileName);
+
+REQUIRES PHP 5.2:
+ [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:21:if ($_POST['module'])    $module = $_POST['module'];
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:22:elseif ($_GET['module']) $module = $_GET['module'];
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:23:else                     $module = 'phreedom';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:33:  $module = 'phreedom';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:53:$pre_process_path = DIR_FS_MODULES . $module . '/pages/' . $page . '/pre_process.php';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:21:if ($_POST['module'])    $module = $_POST['module'];
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:22:elseif ($_GET['module']) $module = $_GET['module'];
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:23:else                     $module = 'phreedom';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:33:  $module = 'phreedom';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:56:require($pre_process_path);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:58:  $template_path = DIR_FS_WORKING . 'custom/pages/' . $page . '/' . $include_template;
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:24:if ($_POST['page'])      $page = $_POST['page'];
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:25:elseif ($_GET['page'])   $page = $_GET['page'];
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:26:else                     $page = 'main';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:34:  $page   = 'main';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:42:if ($page == 'ajax') {
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:60:  $template_path = DIR_FS_WORKING . 'pages/' . $page . '/' . $include_template;
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:24:if ($_POST['page'])      $page = $_POST['page'];
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:25:elseif ($_GET['page'])   $page = $_GET['page'];
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:26:else                     $page = 'main';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:34:  $page   = 'main';
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/index.php:42:if ($page == 'ajax') {
+         [EXEC]/home/scary/victims//PhreedomR34RC2/Phreedom/includes/template_index.php:21:  if (is_file($template_path)) { require($template_path); } else die('No template file. Looking for: ' . $template_path);
+
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreedom/functions/phreedom.php:380:  $data = file($_FILES[$filename]['tmp_name']);
+ [FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreedom/functions/phreedom.php:380:  $data = file($_FILES[$filename]['tmp_name']);
+  [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreedom/classes/beg_balances_imp.php:82:   $lines = file($_FILES[$upload_name]['tmp_name']);
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreedom/classes/beg_balances_imp.php:82:   $lines = file($_FILES[$upload_name]['tmp_name']);
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreedom/classes/beg_balances_imp.php:82:   $lines = file($_FILES[$upload_name]['tmp_name']);
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreedom/classes/beg_balances_imp.php:82:   $lines = file($_FILES[$upload_name]['tmp_name']);
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:37:          $file_size = filesize($file_path . $file_name);
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:24:$method = $_GET['method'];
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:39:          $image     = fread($handle, $file_size);
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:38:          $handle    = fopen($file_path . $file_name, "r");
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:24:$method = $_GET['method'];
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:39:          $image     = fread($handle, $file_size);
+ [FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:37:          $file_size = filesize($file_path . $file_name);
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:24:$method = $_GET['method'];
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:39:          $image     = fread($handle, $file_size);
+ [FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:38:          $handle    = fopen($file_path . $file_name, "r");
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:24:$method = $_GET['method'];
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/pages/popup_label_image/pre_process.php:39:          $image     = fread($handle, $file_size);
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/methods/fedex_v7/fedex_v7.php:1243:        $lines_array = file($_FILES[$upload_name]['tmp_name']);
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/methods/fedex_v7/fedex_v7.php:1243:        $lines_array = file($_FILES[$upload_name]['tmp_name']);
+ [FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/methods/fedex_v7/fedex_v7.php:1243:        $lines_array = file($_FILES[$upload_name]['tmp_name']);
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/shipping/methods/fedex_v7/fedex_v7.php:1243:        $lines_array = file($_FILES[$upload_name]['tmp_name']);
+  [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:144:$charts = scandir(DIR_FS_WORKING . 'language/' . $_SESSION['language'] . '/charts');
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:148: $temp = xml_to_object(file_get_contents(DIR_FS_WORKING . 'language/' . $_SESSION['language'] . '/charts/' . $chart));
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:148: $temp = xml_to_object(file_get_contents(DIR_FS_WORKING . 'language/' . $_SESSION['language'] . '/charts/' . $chart));
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:63:  $filename = $std_chart ? (DIR_FS_WORKING.'language/'.$_SESSION['language'].'/charts/'.$std_chart) : $_FILES['file_name']['tmp_name'];
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:51:  $std_chart    = db_prepare_input($_POST['std_chart']);
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:64:  $accounts = xml_to_object(file_get_contents($filename));
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:144:$charts = scandir(DIR_FS_WORKING . 'language/' . $_SESSION['language'] . '/charts');
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:148: $temp = xml_to_object(file_get_contents(DIR_FS_WORKING . 'language/' . $_SESSION['language'] . '/charts/' . $chart));
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:148: $temp = xml_to_object(file_get_contents(DIR_FS_WORKING . 'language/' . $_SESSION['language'] . '/charts/' . $chart));
+ [FOPEN]
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:63:  $filename = $std_chart ? (DIR_FS_WORKING.'language/'.$_SESSION['language'].'/charts/'.$std_chart) : $_FILES['file_name']['tmp_name'];
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:51:  $std_chart    = db_prepare_input($_POST['std_chart']);
+         [FOPEN]/home/scary/victims//PhreedomR34RC2/Phreedom/modules/phreebooks/pages/admin/pre_process.php:64:  $accounts = xml_to_object(file_get_contents($filename));
+
+
+  [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/profile/admin/actions/DataUploadConfAction.class.php:54:            $csv_file = $_FILES['profile_csv_file']['tmp_name'];
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/profile/admin/actions/DataUploadConfAction.class.php:58:                    $_csv_contents = implode('', file($csv_file));
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/profile/admin/actions/DataUploadConfAction.class.php:54:            $csv_file = $_FILES['profile_csv_file']['tmp_name'];
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/profile/admin/actions/DataUploadConfAction.class.php:61:            foreach(file($csv_file) as $n=>$_data_line){
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/profile/admin/actions/DataUploadConfAction.class.php:54:            $csv_file = $_FILES['profile_csv_file']['tmp_name'];
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/profile/admin/actions/DataUploadConfAction.class.php:58:                    $_csv_contents = implode('', file($csv_file));
+ [FOPEN]
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/profile/admin/actions/DataUploadConfAction.class.php:54:            $csv_file = $_FILES['profile_csv_file']['tmp_name'];
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/profile/admin/actions/DataUploadConfAction.class.php:61:            foreach(file($csv_file) as $n=>$_data_line){
+  [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/user/admin/actions/UserDataUploadConfAction.class.php:45:           $csv_file = $_FILES['user_csv_file']['tmp_name'];
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/user/admin/actions/UserDataUploadConfAction.class.php:49:                   $_csv_contents = implode('', file($csv_file));
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/user/admin/actions/UserDataUploadConfAction.class.php:45:           $csv_file = $_FILES['user_csv_file']['tmp_name'];
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/user/admin/actions/UserDataUploadConfAction.class.php:53:           foreach(file($csv_file) as $n=>$_data_line){
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/user/admin/actions/UserDataUploadConfAction.class.php:45:           $csv_file = $_FILES['user_csv_file']['tmp_name'];
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/user/admin/actions/UserDataUploadConfAction.class.php:49:                   $_csv_contents = implode('', file($csv_file));
+ [FOPEN]
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/user/admin/actions/UserDataUploadConfAction.class.php:45:           $csv_file = $_FILES['user_csv_file']['tmp_name'];
+         [FOPEN]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/html/modules/user/admin/actions/UserDataUploadConfAction.class.php:53:           foreach(file($csv_file) as $n=>$_data_line){
+         
+ [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/scripts/upgrade_utils.php:105:        if(isset($_SESSION['sugar_version_file']) && !empty($_SESSION['sugar_version_file']) && is_file($_SESSION['sugar_version_file'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/scripts/upgrade_utils.php:107:                include($_SESSION['sugar_version_file']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/scripts/upgrade_utils.php:107:                include($_SESSION['sugar_version_file']);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/scripts/upgrade_utils.php:105:        if(isset($_SESSION['sugar_version_file']) && !empty($_SESSION['sugar_version_file']) && is_file($_SESSION['sugar_version_file'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/scripts/upgrade_utils.php:107:                include($_SESSION['sugar_version_file']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/scripts/upgrade_utils.php:107:                include($_SESSION['sugar_version_file']);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:181:        $editFileName = 'modules/'.$module.'/views/view.edit.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:89:                      if(isset($_REQUEST['module'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:90:                  $target_bean = loadBean($_REQUEST['module']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:120:         $module = $_REQUEST['module'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:183:            $editFileName = 'custom/modules/'.$module.'/views/view.edit.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:89:                      if(isset($_REQUEST['module'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:90:                  $target_bean = loadBean($_REQUEST['module']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:120:         $module = $_REQUEST['module'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:188:           include($editFileName);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:181:        $editFileName = 'modules/'.$module.'/views/view.edit.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:89:                      if(isset($_REQUEST['module'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:90:                  $target_bean = loadBean($_REQUEST['module']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:120:         $module = $_REQUEST['module'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:183:            $editFileName = 'custom/modules/'.$module.'/views/view.edit.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:89:                      if(isset($_REQUEST['module'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:90:                  $target_bean = loadBean($_REQUEST['module']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:120:         $module = $_REQUEST['module'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/include/MVC/View/views/view.quickedit.php:188:           include($editFileName);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:87:            $seed = $this->bean;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:88:        if(!empty($this->bean->object_name) && isset($_REQUEST[$module.'2_'.strtoupper($this->bean->object_name).'_offset'])) {//if you click the pagination button, it will populate the search criteria here
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:90:                $blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 'request_data', 'current_query_by_page', $module.'2_'.strtoupper($this->bean->object_name).'_ORDER_BY');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:106:                $this->saved_search = loadBean('SavedSearch');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:107:                $this->saved_search->retrieveSavedSearch($_REQUEST['saved_search_select']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:108:                $this->saved_search->populateRequest();
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:150:           $this->seed = $seed;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:151:           $this->module = $module;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:178:           if(file_exists('modules/'.$this->module.'/SearchForm.html')){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:180:                   $searchForm = new SearchForm($this->module, $this->seed);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:186:                   if (file_exists('custom/modules/'.$this->module.'/metadata/searchdefs.php'))
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:188:                       require_once('custom/modules/'.$this->module.'/metadata/searchdefs.php');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:192:                           require_once($metafiles[$this->module]['searchdefs']);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:87:            $seed = $this->bean;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:88:        if(!empty($this->bean->object_name) && isset($_REQUEST[$module.'2_'.strtoupper($this->bean->object_name).'_offset'])) {//if you click the pagination button, it will populate the search criteria here
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:90:                $blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 'request_data', 'current_query_by_page', $module.'2_'.strtoupper($this->bean->object_name).'_ORDER_BY');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:106:                $this->saved_search = loadBean('SavedSearch');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:107:                $this->saved_search->retrieveSavedSearch($_REQUEST['saved_search_select']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:108:                $this->saved_search->populateRequest();
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:150:           $this->seed = $seed;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:151:           $this->module = $module;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:178:           if(file_exists('modules/'.$this->module.'/SearchForm.html')){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:180:                   $searchForm = new SearchForm($this->module, $this->seed);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:186:                   if (file_exists('custom/modules/'.$this->module.'/metadata/searchdefs.php'))
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:188:                       require_once('custom/modules/'.$this->module.'/metadata/searchdefs.php');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:194:                   elseif (file_exists('modules/'.$this->module.'/metadata/searchdefs.php'))
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:196:                       require_once('modules/'.$this->module.'/metadata/searchdefs.php');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:201:                           require_once($metafiles[$this->module]['searchfields']);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:87:            $seed = $this->bean;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:88:        if(!empty($this->bean->object_name) && isset($_REQUEST[$module.'2_'.strtoupper($this->bean->object_name).'_offset'])) {//if you click the pagination button, it will populate the search criteria here
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:90:                $blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 'request_data', 'current_query_by_page', $module.'2_'.strtoupper($this->bean->object_name).'_ORDER_BY');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:106:                $this->saved_search = loadBean('SavedSearch');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:107:                $this->saved_search->retrieveSavedSearch($_REQUEST['saved_search_select']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:108:                $this->saved_search->populateRequest();
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:150:           $this->seed = $seed;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:151:           $this->module = $module;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:178:           if(file_exists('modules/'.$this->module.'/SearchForm.html')){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:180:                   $searchForm = new SearchForm($this->module, $this->seed);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:186:                   if (file_exists('custom/modules/'.$this->module.'/metadata/searchdefs.php'))
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:188:                       require_once('custom/modules/'.$this->module.'/metadata/searchdefs.php');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:192:                           require_once($metafiles[$this->module]['searchdefs']);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:87:            $seed = $this->bean;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:88:        if(!empty($this->bean->object_name) && isset($_REQUEST[$module.'2_'.strtoupper($this->bean->object_name).'_offset'])) {//if you click the pagination button, it will populate the search criteria here
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:90:                $blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 'request_data', 'current_query_by_page', $module.'2_'.strtoupper($this->bean->object_name).'_ORDER_BY');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:106:                $this->saved_search = loadBean('SavedSearch');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:107:                $this->saved_search->retrieveSavedSearch($_REQUEST['saved_search_select']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:108:                $this->saved_search->populateRequest();
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:150:           $this->seed = $seed;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:151:           $this->module = $module;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:178:           if(file_exists('modules/'.$this->module.'/SearchForm.html')){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:180:                   $searchForm = new SearchForm($this->module, $this->seed);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:186:                   if (file_exists('custom/modules/'.$this->module.'/metadata/searchdefs.php'))
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:188:                       require_once('custom/modules/'.$this->module.'/metadata/searchdefs.php');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:194:                   elseif (file_exists('modules/'.$this->module.'/metadata/searchdefs.php'))
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:196:                       require_once('modules/'.$this->module.'/metadata/searchdefs.php');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/ProjectTask/views/view.list.php:201:                           require_once($metafiles[$this->module]['searchfields']);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MailMerge/Step1.php:94:        $bean = $beanList[ $_SESSION['MAILMERGE_MODULE']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MailMerge/Step1.php:95:        require_once($beanFiles[$bean]);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MailMerge/Step1.php:94:        $bean = $beanList[ $_SESSION['MAILMERGE_MODULE']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MailMerge/Step1.php:95:        require_once($beanFiles[$bean]);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/EditView.php:76:        $class_name = $beanList[$_REQUEST['load_module']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/EditView.php:77:        require_once($beanFiles[$class_name]);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/EditView.php:76:        $class_name = $beanList[$_REQUEST['load_module']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/EditView.php:77:        require_once($beanFiles[$class_name]);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:506:                                  if(isset($beanList[$_REQUEST['parent_type']]) && !empty($beanList[$_REQUEST['parent_type']])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:507:                                          $className = $beanList[$_REQUEST['parent_type']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:872:                                          if(isset($beanList[$_REQUEST['parent_type']]) && !empty($beanList[$_REQUEST['parent_type']])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:873:                                                  $className = $beanList[$_REQUEST['parent_type']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:876:                                                                  require_once($beanFiles[$className]);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:506:                                  if(isset($beanList[$_REQUEST['parent_type']]) && !empty($beanList[$_REQUEST['parent_type']])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:507:                                          $className = $beanList[$_REQUEST['parent_type']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:872:                                          if(isset($beanList[$_REQUEST['parent_type']]) && !empty($beanList[$_REQUEST['parent_type']])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:873:                                                  $className = $beanList[$_REQUEST['parent_type']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Emails/Email.php:876:                                                                  require_once($beanFiles[$className]);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:55:           $target = $_REQUEST['bean'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:60:           if($target == 'all') {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:100:                  require_once($beanFiles[$beanList[$target]]);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:55:           $target = $_REQUEST['bean'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:60:           if($target == 'all') {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:55:           $target = $_REQUEST['bean'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:122:          if(isset($_REQUEST['bean']) && !empty($_REQUEST['bean']) && isset($_REQUEST['id']) && !empty($_REQUEST['id'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:124:                  $target = $_REQUEST['bean'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:125:                  require_once($beanFiles[$beanList[$target]]);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:55:           $target = $_REQUEST['bean'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:60:           if($target == 'all') {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:100:                  require_once($beanFiles[$beanList[$target]]);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:55:           $target = $_REQUEST['bean'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:60:           if($target == 'all') {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:55:           $target = $_REQUEST['bean'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:122:          if(isset($_REQUEST['bean']) && !empty($_REQUEST['bean']) && isset($_REQUEST['id']) && !empty($_REQUEST['id'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:124:                  $target = $_REQUEST['bean'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Administration/Async.php:125:                  require_once($beanFiles[$beanList[$target]]);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:117:              $manifest_file = extractManifest($tempFile);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:64:        $tempFile = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:69:            $tempFile = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:74:                           $tempFile = $pm->download($release_map['category_id'], $release_map['package_id'], $_REQUEST['release_id']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:68:            $pm = new PackageManager();
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:101:               $tempFile = "upload://".$upload->get_stored_file_name();
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:120:                  require_once( $manifest_file );
+         
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:117:              $manifest_file = extractManifest($tempFile);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:64:        $tempFile = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:69:            $tempFile = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:74:                           $tempFile = $pm->download($release_map['category_id'], $release_map['package_id'], $_REQUEST['release_id']);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:68:            $pm = new PackageManager();
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:101:               $tempFile = "upload://".$upload->get_stored_file_name();
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/upload.php:120:                  require_once( $manifest_file );
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:108:                          if($file !="." && $file !="..") {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:237:          $file = "$unzip_dir/" . constant('SUGARCRM_PRE_INSTALL_FILE');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:190:          $unzip_dir = $_SESSION['unzip_dir'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:99:   if(!isset($_SESSION['unzip_dir']) || empty($_SESSION['unzip_dir'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:186:          $_SESSION['unzip_dir'] = clean_path($unzip_dir);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:240:                  include($file);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:108:                          if($file !="." && $file !="..") {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:237:          $file = "$unzip_dir/" . constant('SUGARCRM_PRE_INSTALL_FILE');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:190:          $unzip_dir = $_SESSION['unzip_dir'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:99:   if(!isset($_SESSION['unzip_dir']) || empty($_SESSION['unzip_dir'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:186:          $_SESSION['unzip_dir'] = clean_path($unzip_dir);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:308:                  $file = "$unzip_dir/" . constant('SUGARCRM_POST_INSTALL_FILE');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:190:          $unzip_dir = $_SESSION['unzip_dir'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:99:   if(!isset($_SESSION['unzip_dir']) || empty($_SESSION['unzip_dir'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:186:          $_SESSION['unzip_dir'] = clean_path($unzip_dir);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:313:                          include($file);
+         
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:108:                          if($file !="." && $file !="..") {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:237:          $file = "$unzip_dir/" . constant('SUGARCRM_PRE_INSTALL_FILE');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:190:          $unzip_dir = $_SESSION['unzip_dir'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:99:   if(!isset($_SESSION['unzip_dir']) || empty($_SESSION['unzip_dir'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:186:          $_SESSION['unzip_dir'] = clean_path($unzip_dir);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:240:                  include($file);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:108:                          if($file !="." && $file !="..") {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:237:          $file = "$unzip_dir/" . constant('SUGARCRM_PRE_INSTALL_FILE');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:190:          $unzip_dir = $_SESSION['unzip_dir'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:99:   if(!isset($_SESSION['unzip_dir']) || empty($_SESSION['unzip_dir'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:186:          $_SESSION['unzip_dir'] = clean_path($unzip_dir);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:308:                  $file = "$unzip_dir/" . constant('SUGARCRM_POST_INSTALL_FILE');
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:190:          $unzip_dir = $_SESSION['unzip_dir'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:99:   if(!isset($_SESSION['unzip_dir']) || empty($_SESSION['unzip_dir'])) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:186:          $_SESSION['unzip_dir'] = clean_path($unzip_dir);
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:103:          $unzip_dir = '';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:106:                  if (file_exists(clean_path($base_tmp_upgrade_dir)) && $handle = opendir(clean_path($base_tmp_upgrade_dir))) {
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:110:                                   if(is_file($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:111:                                          require_once($base_tmp_upgrade_dir."/".$file."/manifest.php");
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:114:                                          if(file_exists($base_tmp_upgrade_dir."/".$file."/".$package_name) && file_exists($base_tmp_upgrade_dir."/".$file."/scripts") && file_exists($base_tmp_upgrade_dir."/".$file."/manifest.php")){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:116:                                                  $unzip_dir = $base_tmp_upgrade_dir."/".$file;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:148:                  $unzip_dir                              = mk_temp_dir( $base_tmp_upgrade_dir );
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/UpgradeWizard/commit.php:313:                          include($file);
+         
+         
+Requires php 5.2
+         THIS LOOKS GOOD:
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:57:   $subpanelView = 'modules/'. $target_module . '/views/view.subpanelquickcreate.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:39:$target_module = $_REQUEST['target_module']; // target class
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:61:        require_once('custom/' . $subpanelView);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:57:   $subpanelView = 'modules/'. $target_module . '/views/view.subpanelquickcreate.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:39:$target_module = $_REQUEST['target_module']; // target class
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:69:           require_once($subpanelView);
+         
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:57:   $subpanelView = 'modules/'. $target_module . '/views/view.subpanelquickcreate.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:39:$target_module = $_REQUEST['target_module']; // target class
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:61:        require_once('custom/' . $subpanelView);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:57:   $subpanelView = 'modules/'. $target_module . '/views/view.subpanelquickcreate.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:39:$target_module = $_REQUEST['target_module']; // target class
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Home/SubpanelCreates.php:69:           require_once($subpanelView);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Audit/Popup_picker.php:53:$bean = $beanList[$_REQUEST['module_name']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Audit/Popup_picker.php:54:require_once($beanFiles[$bean]);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Audit/Popup_picker.php:53:$bean = $beanList[$_REQUEST['module_name']];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/Audit/Popup_picker.php:54:require_once($beanFiles[$bean]);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:98:$metadataFile = null;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:101:    $metadataFile = 'custom/modules/' . $module . '/metadata/listviewdefs.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:97:$module = $_REQUEST['merge_module'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:106:        if(!empty($metafiles[$module]['listviewdefs'])){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:107:            $metadataFile = $metafiles[$module]['listviewdefs'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:106:        if(!empty($metafiles[$module]['listviewdefs'])){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:107:            $metadataFile = $metafiles[$module]['listviewdefs'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:112:        if(!empty($metafiles[$module]['listviewdefs'])){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:113:            $metadataFile = $metafiles[$module]['listviewdefs'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:119:        $metadataFile = 'modules/'.$module.'/metadata/listviewdefs.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:97:$module = $_REQUEST['merge_module'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:121:require_once($metadataFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:98:$metadataFile = null;
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:101:    $metadataFile = 'custom/modules/' . $module . '/metadata/listviewdefs.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:97:$module = $_REQUEST['merge_module'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:106:        if(!empty($metafiles[$module]['listviewdefs'])){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:107:            $metadataFile = $metafiles[$module]['listviewdefs'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:106:        if(!empty($metafiles[$module]['listviewdefs'])){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:107:            $metadataFile = $metafiles[$module]['listviewdefs'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:112:        if(!empty($metafiles[$module]['listviewdefs'])){
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:113:            $metadataFile = $metafiles[$module]['listviewdefs'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:119:        $metadataFile = 'modules/'.$module.'/metadata/listviewdefs.php';
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:97:$module = $_REQUEST['merge_module'];
+         [EXEC]/home/scary/victims//SugarCE-Upgrade-6.4.x-to-6.5.7/SugarCE-Upgrade-6.4.x-to-6.5.7/modules/MergeRecords/Step2.php:121:require_once($metadataFile);
+
+
+
+4) addsoppers/admin/includes/jsons/templates_modules.php:include('../includes/modules'.$_REQUEST['set'].'/'.$file['name']);
+<?php
+/*
+  $Id: templates_modules.php $
+  TomatoCart Open Source Shopping Cart Solutions
+  http://www.tomatocart.com
+
+  Copyright (c) 2009 Wuxi Elootec Technology Co., Ltd
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License v2 (1991)
+  as published by the Free Software Foundation.
+*/
+  include('../includes/classes/modules.php');
+
+  class toC_Json_Templates_Modules {
+
+    function listTemplatesModules() {
+      global $toC_Json, $osC_Language;
+
+      $osC_Language->load('modules-' . $_REQUEST['set']);
+
+      $osC_DirectoryListing = new osC_DirectoryListing('../includes/modules/' . $_REQUEST['set']);
+      $osC_DirectoryListing->setIncludeDirectories(false);
+
+      $files = $osC_DirectoryListing->getFiles();
+
+          $modules = array();
+
+          foreach ( $files as $file ) {
+        include('../includes/modules/' . $_REQUEST['set'] . '/' . $file['name']);
+        
+        [EXEC]batavi-1.2.2/includes/application_top.php:205:$process_box = $_REQUEST['process'];
+[EXEC]batavi-1.2.2/includes/application_top.php:214:$box_path = btv_check_template_box($process_box);
+[EXEC]batavi-1.2.2/includes/application_top.php:216:require_once($box_path)
+        
+batavi-1.2.2/includes/functions/general.php:1122
+  function btv_check_template_box($code) {
+    if (file_exists(DIR_TEMPLATES . DEFAULT_TEMPLATE . '/php/boxes/' . $code . '.php')) {
+      return DIR_TEMPLATES . DEFAULT_TEMPLATE . '/php/boxes/' . $code . '.php';
+    } else {
+      return DIR_BOXES . $code . '.php';
+    }
+  }
+
+EXPLOIT:
+includes/application_top.php?request_process=./../../../../../../../../../../../../../../../../../../../../../proc/self/environ
+
+?
+
+[EVAL]
+        [EVAL]/home/acid/src/Perl/DiveInferno/victims//molinos-cms-11.09.15-stable/lib/Molinos/Server/MFS/AppServer/Middleware/PHP/Compat.php:217:                              eval($code = '$_FILES[' . $parts[0] . '][\'' . $key . '\'][' . $parts[1] . ' = $fdata[\'' . $key . '\'];');
+[EVAL]
+        [EVAL]/home/acid/src/Perl/DiveInferno/victims//molinos-cms-11.09.15-stable/lib/Molinos/Server/MFS/AppServer/Middleware/PHP/Compat.php:217:                              eval($code = '$_FILES[' . $parts[0] . '][\'' . $key . '\'][' . $parts[1] . ' = $fdata[\'' . $key . '\'];');
+[EVAL]
+        [EVAL]/home/acid/src/Perl/DiveInferno/victims//molinos-cms-11.09.15-stable/lib/Molinos/Server/MFS/AppServer/Middleware/PHP/Compat.php:217:                              eval($code = '$_FILES[' . $parts[0] . '][\'' . $key . '\'][' . $parts[1] . ' = $fdata[\'' . $key . '\'];');
+[EVAL]
+        [EVAL]/home/acid/src/Perl/DiveInferno/victims//molinos-cms-11.09.15-stable/lib/Molinos/Server/MFS/AppServer/Middleware/PHP/Compat.php:217:                              eval($code = '$_FILES[' . $parts[0] . '][\'' . $key . '\'][' . $parts[1] . ' = $fdata[\'' . $key . '\'];');
+
+
+cpassman_1.82:
+
+[XSS]folders.php:178:$t:echo(<option value="na">---'.$txt['select'].'---</option>';
+[XSS]folders.php:180:$t:echo(<option value="0">'.$txt['root'].'</option>';
+[XSS]folders.php:188:$t:echo(<option value="'.$t->id.'">'.$ident.$t->title.'</option>';
+[XSS]folders.php:190:$t:echo(<option value="'.$t->id.'">'.$ident.$t->title.'</option>';
+[XSS]folders.php:192:$t:echo(<option value="'.$t->id.'">'.$ident.$t->title.'</option>';
+[EXEC]folders.php:12:$_SESSION['user_language']:require_once('includes/language/'.$_SESSION['user_language'].'_admin_help.php');
+
+AcidZed@ewil.pl$ pwd                                         
+/home/acid/src/Perl/DiveInferno/victims/cpassman_1.82
+AcidZed@ewil.pl$ perl ../../project/scary.pl sca folders.php 
+
+PHPBounce (12 downloads per week, szkoda czasu)
+
+[SQL]././auth.php:10:$username: mysql_query("SELECT * FROM users WHERE username='$username'")or die (mysql_error())
+[SQL]././login.php:26:$userget: mysql_query("SELECT * FROM users WHERE username='$userget'")or die (mysql_error())
+[XSS]././auth.php:10:$username: mysql_query("SELECT * FROM users WHERE username='$username'")or die (mysql_error())
+[XSS]././login.php:26:$userget: mysql_query("SELECT * FROM users WHERE username='$userget'")or die (mysql_error())
+
+AcidZed@ewil.pl$ pwd
+/home/acid/src/Perl/DiveInferno/victims/PHPBounce-0.9.9a
+AcidZed@ewil.pl$ perl ../../project/scary.pl sca index.php 
+
+
+OmegaBill-1.0
+[SQL]mypanel.php:19:$_SESSION["adminid"]: mysql_query("SELECT * FROM admins WHERE adminid ='".$_SESSION["adminid"]."'" , $sqlconnection)
+[SQL]mypanel.php:19:$_SESSION["adminid"]: mysql_query("SELECT * FROM admins WHERE adminid ='".$_SESSION["adminid"]."'" , $sqlconnection)
+[SQL]mypanel.php:64:$updateuser:mysql_query($updateuser, $sqlconnection);
+[SQL]mypanel.php:64:$updateuser:mysql_query($updateuser, $sqlconnection);
+[XSS]mypanel.php:19:$_SESSION["adminid"]: mysql_query("SELECT * FROM admins WHERE adminid ='".$_SESSION["adminid"]."'" , $sqlconnection)
+[XSS]mypanel.php:19:$_SESSION["adminid"]: mysql_query("SELECT * FROM admins WHERE adminid ='".$_SESSION["adminid"]."'" , $sqlconnection)
+[XSS]mypanel.php:64:$updateuser:mysql_query($updateuser, $sqlconnection);
+[XSS]mypanel.php:64:$updateuser:mysql_query($updateuser, $sqlconnection);
+
+AcidZed@ewil.pl$ pwd                                         
+/home/acid/src/Perl/DiveInferno/victims/OmegaBill-1.0
+AcidZed@ewil.pl$ perl ../../project/scary.pl sca mypanel.php
+
+
+
+
+
+
+
+[1;31m[EXEC]
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Reports/CreatePDF.php:16:$language = $_SESSION['authenticated_user_language'].'.lang.php';
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Reports/CreatePDF.php:17:require_once("include/language/$language");
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Reports/CreatePDF.php:16:$language = $_SESSION['authenticated_user_language'].'.lang.php';
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Reports/CreatePDF.php:17:require_once("include/language/$language");
+  [1;31m[EXEC]
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:16:   $targetSettingPage = "modules/$targetmodule/Settings.php";
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:14:   $targetmodule = $_REQUEST['formodule'];
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:19:           require_once($targetSettingPage);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:16:   $targetSettingPage = "modules/$targetmodule/Settings.php";
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:14:   $targetmodule = $_REQUEST['formodule'];
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:19:           require_once($targetSettingPage);
+  [1;31m[EXEC]
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Reports/CreatePDF.php:16:$language = $_SESSION['authenticated_user_language'].'.lang.php';
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Reports/CreatePDF.php:17:require_once("include/language/$language");
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Reports/CreatePDF.php:16:$language = $_SESSION['authenticated_user_language'].'.lang.php';
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Reports/CreatePDF.php:17:require_once("include/language/$language");
+  [1;31m[EXEC]
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:16:        $targetSettingPage = "modules/$targetmodule/Settings.php";
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:14:        $targetmodule = $_REQUEST['formodule'];
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:19:                require_once($targetSettingPage);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:16:        $targetSettingPage = "modules/$targetmodule/Settings.php";
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:14:        $targetmodule = $_REQUEST['formodule'];
+         [EXEC]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/modules/Settings/ModuleManager.php:19:                require_once($targetSettingPage);
+  [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:83:            $this->session = &$_SESSION;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:86:        $this->types = &$this->config['types'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:87:        $firstType = array_keys($this->types);
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:89:        $this->type = (
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:90:            isset($this->get['type']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:91:            isset($this->types[$this->get['type']])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:96:        if (is_array($this->types[$this->type])) {
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:97:            foreach ($this->types[$this->type] as $key => $val)
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:99:                    $this->config[$key] = $val;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:100:            $this->types[$this->type] = isset($this->types[$this->type]['type'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:105:        if (!strlen($this->config['cookieDomain']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:106:            $this->config['cookieDomain'] = $_SERVER['HTTP_HOST'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:107:        if (!strlen($this->config['cookiePath']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:108:            $this->config['cookiePath'] = "/";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:111:        if ($this->config['uploadURL'] == "/") {
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:112:            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:115:            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:116:            $this->typeURL = "/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:118:            $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:121:            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:124:            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:125:            $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:127:        if (!is_dir($this->config['uploadDir']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:131:        if (isset($this->get['CKEditorFuncNum']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:132:            $this->opener['CKEditor']['funcNum'] = $this->get['CKEditorFuncNum'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:133:        if (isset($this->get['opener']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:135:            isset($this->config['_tinyMCEPath']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:136:            strlen($this->config['_tinyMCEPath'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:138:            $this->opener['TinyMCE'] = true;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:141:        foreach ($this->langInputNames as $key)
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:142:            if (isset($this->get[$key]) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:144:                file_exists("lang/" . strtolower($this->get[$key]) . ".php")
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:146:                $this->lang = $this->get[$key];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:149:        $this->localize($this->lang);
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:152:        $htaccess = "{$this->config['uploadDir']}/.htaccess";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:160:                if (false === ($data = @file_get_contents($htaccess)))
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:83:            $this->session = &$_SESSION;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:86:        $this->types = &$this->config['types'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:87:        $firstType = array_keys($this->types);
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:89:        $this->type = (
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:90:            isset($this->get['type']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:91:            isset($this->types[$this->get['type']])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:96:        if (is_array($this->types[$this->type])) {
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:97:            foreach ($this->types[$this->type] as $key => $val)
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:99:                    $this->config[$key] = $val;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:100:            $this->types[$this->type] = isset($this->types[$this->type]['type'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:105:        if (!strlen($this->config['cookieDomain']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:106:            $this->config['cookieDomain'] = $_SERVER['HTTP_HOST'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:107:        if (!strlen($this->config['cookiePath']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:108:            $this->config['cookiePath'] = "/";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:111:        if ($this->config['uploadURL'] == "/") {
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:112:            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:115:            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:116:            $this->typeURL = "/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:118:            $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:121:            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:124:            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:125:            $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:127:        if (!is_dir($this->config['uploadDir']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:131:        if (isset($this->get['CKEditorFuncNum']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:132:            $this->opener['CKEditor']['funcNum'] = $this->get['CKEditorFuncNum'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:133:        if (isset($this->get['opener']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:135:            isset($this->config['_tinyMCEPath']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:136:            strlen($this->config['_tinyMCEPath'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:138:            $this->opener['TinyMCE'] = true;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:141:        foreach ($this->langInputNames as $key)
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:142:            if (isset($this->get[$key]) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:144:                file_exists("lang/" . strtolower($this->get[$key]) . ".php")
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:146:                $this->lang = $this->get[$key];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:149:        $this->localize($this->lang);
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:152:        $htaccess = "{$this->config['uploadDir']}/.htaccess";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:160:                if (false === ($data = @file_get_contents($htaccess)))
+  [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:83:            $this->session = &$_SESSION;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:86:        $this->types = &$this->config['types'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:87:        $firstType = array_keys($this->types);
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:89:        $this->type = (
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:90:            isset($this->get['type']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:91:            isset($this->types[$this->get['type']])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:96:        if (is_array($this->types[$this->type])) {
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:97:            foreach ($this->types[$this->type] as $key => $val)
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:99:                    $this->config[$key] = $val;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:100:            $this->types[$this->type] = isset($this->types[$this->type]['type'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:105:        if (!strlen($this->config['cookieDomain']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:106:            $this->config['cookieDomain'] = $_SERVER['HTTP_HOST'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:107:        if (!strlen($this->config['cookiePath']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:108:            $this->config['cookiePath'] = "/";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:111:        if ($this->config['uploadURL'] == "/") {
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:112:            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:115:            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:116:            $this->typeURL = "/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:118:            $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:121:            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:124:            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:125:            $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:127:        if (!is_dir($this->config['uploadDir']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:131:        if (isset($this->get['CKEditorFuncNum']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:132:            $this->opener['CKEditor']['funcNum'] = $this->get['CKEditorFuncNum'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:133:        if (isset($this->get['opener']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:135:            isset($this->config['_tinyMCEPath']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:136:            strlen($this->config['_tinyMCEPath'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:138:            $this->opener['TinyMCE'] = true;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:141:        foreach ($this->langInputNames as $key)
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:142:            if (isset($this->get[$key]) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:144:                file_exists("lang/" . strtolower($this->get[$key]) . ".php")
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:146:                $this->lang = $this->get[$key];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:149:        $this->localize($this->lang);
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:152:        $htaccess = "{$this->config['uploadDir']}/.htaccess";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:160:                if (false === ($data = @file_get_contents($htaccess)))
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:83:            $this->session = &$_SESSION;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:86:        $this->types = &$this->config['types'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:87:        $firstType = array_keys($this->types);
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:89:        $this->type = (
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:90:            isset($this->get['type']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:91:            isset($this->types[$this->get['type']])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:96:        if (is_array($this->types[$this->type])) {
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:97:            foreach ($this->types[$this->type] as $key => $val)
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:99:                    $this->config[$key] = $val;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:100:            $this->types[$this->type] = isset($this->types[$this->type]['type'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:105:        if (!strlen($this->config['cookieDomain']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:106:            $this->config['cookieDomain'] = $_SERVER['HTTP_HOST'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:107:        if (!strlen($this->config['cookiePath']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:108:            $this->config['cookiePath'] = "/";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:111:        if ($this->config['uploadURL'] == "/") {
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:112:            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:115:            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:116:            $this->typeURL = "/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:118:            $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:121:            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:124:            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:125:            $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:127:        if (!is_dir($this->config['uploadDir']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:131:        if (isset($this->get['CKEditorFuncNum']))
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:132:            $this->opener['CKEditor']['funcNum'] = $this->get['CKEditorFuncNum'];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:133:        if (isset($this->get['opener']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:135:            isset($this->config['_tinyMCEPath']) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:136:            strlen($this->config['_tinyMCEPath'])
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:138:            $this->opener['TinyMCE'] = true;
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:141:        foreach ($this->langInputNames as $key)
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:142:            if (isset($this->get[$key]) &&
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:144:                file_exists("lang/" . strtolower($this->get[$key]) . ".php")
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:146:                $this->lang = $this->get[$key];
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:149:        $this->localize($this->lang);
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:152:        $htaccess = "{$this->config['uploadDir']}/.htaccess";
+         [FOPEN]/home/scary/victims//salesplatform-vtigercrm-5.3.0-201112/vtigercrm/kcfinder/core/uploader.php:160:                if (false === ($data = @file_get_contents($htaccess)))
+ 
+          [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/config/default/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/config/default/../../incphp/globals.php:103:     $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/config/default/../../incphp/globals.php:105:             require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/config/default/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/config/default/../../incphp/globals.php:103:     $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/config/default/../../incphp/globals.php:105:             require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/selectionManagement/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/selectionManagement/../../incphp/globals.php:103:        $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/selectionManagement/../../incphp/globals.php:105:                require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/selectionManagement/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/selectionManagement/../../incphp/globals.php:103:        $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/selectionManagement/../../incphp/globals.php:105:                require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/coordinates/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/coordinates/../../incphp/globals.php:103:        $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/coordinates/../../incphp/globals.php:105:                require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/coordinates/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/coordinates/../../incphp/globals.php:103:        $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/coordinates/../../incphp/globals.php:105:                require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/export/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/export/../../incphp/globals.php:103:     $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/export/../../incphp/globals.php:105:             require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/export/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/export/../../incphp/globals.php:103:     $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/export/../../incphp/globals.php:105:             require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:103:       $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:105:               require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:103:       $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:105:               require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:103:       $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:105:               require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:103:       $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/transparency/../../incphp/globals.php:105:               require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/layerinfo/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/layerinfo/../../incphp/globals.php:103:  $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/layerinfo/../../incphp/globals.php:105:          require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/layerinfo/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/layerinfo/../../incphp/globals.php:103:  $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/layerinfo/../../incphp/globals.php:105:          require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/dynlayersample/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/dynlayersample/../../incphp/globals.php:103:     $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/dynlayersample/../../incphp/globals.php:105:             require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/dynlayersample/../../incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/dynlayersample/../../incphp/globals.php:103:     $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/plugins/dynlayersample/../../incphp/globals.php:105:             require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:103: $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/xajax/../globals.php:105:         require_once($clientDynamicLayerFile);
+  [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/globals.php:103:  $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/globals.php:105:          require_once($clientDynamicLayerFile);
+ [EXEC]
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/globals.php:93:    require_once($_SESSION['PM_PLUGIN_REALPATH'] . "/dynlayer" . $dynLayerPath . "/dynlayer" . $dynLayerPath . ".php");
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/globals.php:103:  $clientDynamicLayerFile = $_SESSION['PM_PLUGIN_REALPATH'] . "/clientdynamiclayers/clientDynamicLayers.php";
+         [EXEC]/home/scary/victims//pmapper-4.2.0/pmapper-4.2.0/incphp/globals.php:105:          require_once($clientDynamicLayerFile);

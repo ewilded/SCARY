@@ -1,0 +1,171 @@
+Looks like rawurlencode eliminates nullbyte.
+      [EXEC]/home/scary/victims//phpsqlitecms_2.0.3-112-10-19/phpsqlitecms/index.php:47:    if($qs=='') $cache_file = rawurlencode(strtolower($settings['index_page'])).'.cache';
+
+		# - [WARNING] required file doesn't exist: /home/acid/src/Perl/DiveInferno/victims/cpassman_1.82/sources/includes/settings.php (require_once('includes/settings.php')) - is this still up to date? - MAKE SURE WHAT THE WORKING DIR IS SINCE IT'S CRUCIAL!
+		# - fix recognition of nullbyte requirement for such cases:
+			[EXEC] base-1.4.5/base-1.4.5/setup/setup2.php:31:$ado_inc_php = $_SESSION['adodbpath'] . "/adodb.inc.php";
+			[EXEC] base-1.4.5/base-1.4.5/setup/setup2.php:32:if ($ado_inc_php == "")
+			[EXEC] base-1.4.5/base-1.4.5/setup/setup2.php:47:include($ado_inc_php);
+		# - false positive:
+			$lang = isset($_GET['language']) ? strtolower($_GET['language']) : ''; // get language setting, default to none (english)
+			if (array_key_exists($lang, $languages))    // is this language installed?
+    		$installMessageFile = "protected/messages/$lang/install.php";
+			$installMessages = array();
+			if (isset($installMessageFile) && file_exists($installMessageFile)) { // attempt to load installer messages
+    		$installMessages = include($installMessageFile);     // from the chosen language
+	   # - false positive
+	   			[SQL]/home/scary/victims//ATutor-2.1/ATutor/documentation/add_note.php:59:		$sql = "INSERT INTO ".AT_HANDBOOK_DB_TABLE_PREFIX."handbook_notes VALUES (NULL, NOW(), '$_POST[section]', '$_POST[page]', 0, '$_POST[email]', '$_POST[note]')";
+	[SQL]/home/scary/victims//ATutor-2.1/ATutor/documentation/add_note.php:60:		mysql_query($sql, $db);
+		- wtf  [EXEC]../victims//batavi-1.2.2/admin/ext/PHPExcel/PHPExcel/Shared/JAMA/examples/Stats.php:607:include_once('PEAR.php')
+        				[EXEC]../victims//batavi-1.2.2/admin/ext/PHPExcel/PHPExcel/Shared/JAMA/examples/Stats.php:457:require_once('../Matrix.php')
+        				
+        				
+        				strstr call does not appear in the code trace, why? (docmgr-1.2.6)
+$file = $_REQUEST["file"];
+$deffile = $_REQUEST["deffile"];
+//sanity checking
+if (!$file) die("No file template specified");
+if ($file[0]=="/") die("Cannot use absolute paths in the filename");
+if (strstr($file,"..")!=null) die("Cannot use \"../\" in the filename");
+if (!file_exists($file)) die("File \"".$file."\" does not exist");
+$str = file_get_contents("$file");
+
+
+[EXEC]batavi-1.2.2/admin/rpc.php:395:include(DIR_MODULES . btv_Module::getParentClassPath($get_parents) . '/' . $get_module . '.php')
+        [EXEC]batavi-1.2.2/admin/rpc.php:46:$_module = $get_module;
+        [EXEC]batavi-1.2.2/admin/rpc.php:60:$module_class = 'btv_Content_' . ucfirst($_module);
+        [EXEC]batavi-1.2.2/admin/rpc.php:62:$btv_Template = new $module_class();
+        [EXEC]batavi-1.2.2/admin/rpc.php:407:require_once(DIR_TEMPLATES_ADMIN . 'pages/' . $request_module . '/' . $btv_Template->getPageContentsFilename())
+- not exploitable - creation of new nonexistant class will result in fatal error
+
+[EXEC]
+        [EXEC]batavi-1.2.2/admin/index.php:36:$_SESSION['module'] = $_module;
+        [EXEC]batavi-1.2.2/admin/index.php:40:if ( $_SESSION['module'] != 'index' && $_SESSION['module'] != 'login' && !btv_Access::hasAccess($_SESSION['module']) ) {
+        [EXEC]batavi-1.2.2/admin/index.php:51:$module_class = 'btv_Content_' . ucfirst($_SESSION['module']);
+        [EXEC]batavi-1.2.2/admin/index.php:52:$btv_Template = new $module_class();
+        [EXEC]batavi-1.2.2/admin/templates/default.php:166:require_once('templates/pages/' . $btv_Template->getModule() . '/' . $btv_Template->getPageContentsFilename())
+- won't work (another new())
+
+[EXEC]
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:507:$fileName = DIR_CLASSES_ADMIN . 'export/formats/' . $object . '_' . $format . '.php';
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:511:require_once($fileName)
+[EXEC]
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:418:$fileName  = DIR_CLASSES_ADMIN . 'export/formats/' . $this->_exports_objects_code . '_' . $this->_exports_formats_code . '.php';
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:423:require_once($fileName)
+[EXEC]
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:253:$fileName  = DIR_CLASSES_ADMIN . 'export/formats/' . $exports_objects_code . '_' . $exports_formats_code . '.php';
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:256:require_once($fileName)
+[EXEC]
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:507:$fileName = DIR_CLASSES_ADMIN . 'export/formats/' . $object . '_' . $format . '.php';
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:511:require_once($fileName)
+[EXEC]
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:418:$fileName  = DIR_CLASSES_ADMIN . 'export/formats/' . $this->_exports_objects_code . '_' . $this->_exports_formats_code . '.php';
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:423:require_once($fileName)
+[EXEC]
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:253:$fileName  = DIR_CLASSES_ADMIN . 'export/formats/' . $exports_objects_code . '_' . $exports_formats_code . '.php';
+        [EXEC]batavi-1.2.2/admin/includes/content/export.php:256:require_once($fileName)
+- lack of object code understanding
+
+[EXEC]
+        [EXEC]batavi-1.2.2/admin/includes/classes/template.php:213:$group = basename($_SERVER['SCRIPT_FILENAME']);
+        [EXEC]batavi-1.2.2/admin/includes/classes/template.php:215:if (($pos = strrpos($group, '.')) !== false) {
+        [EXEC]batavi-1.2.2/admin/includes/classes/template.php:213:$group = basename($_SERVER['SCRIPT_FILENAME']);
+        [EXEC]batavi-1.2.2/admin/includes/classes/template.php:216:$group = substr($group, 0, $pos);
+        [EXEC]batavi-1.2.2/admin/includes/classes/template.php:226:include(DIR_INCLUDES . 'content/' . $group . '/' . $module . '.php')
+- check this out (basename should be already untainting, while $module is probably reg_glob expected
+
+ [1;31m[SQL]
+         [SQL]/home/scary/victims//wdCalendar1.4/php/datafeed.db.php:1:
+     $sql = "insert into `jqcalendar` (`subject`, `starttime`, `endtime`, `isalldayevent`) values ('"
+       .mysql_real_escape_string($sub)."', '"
+       .php2MySqlTime(js2PhpTime($st))."', '"
+       .php2MySqlTime(js2PhpTime($et))."', '"
+       .mysql_real_escape_string($ade)."' )";
+     //echo($sql);
+                 if(mysql_query($sql)==false){
+       $ret['IsSuccess'] = false;
+       $ret['Msg'] = mysql_error();
+     }else{
+       $ret['IsSuccess'] = true;
+       $ret['Msg'] = 'add success';
+       $ret['Data'] = mysql_insert_id();
+     }
+         }catch(Exception $e){
+      $ret['IsSuccess'] = false;
+      $ret['Msg'] = $e->getMessage();
+   }
+   return $ret;
+ }
+ 
+
+[1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:429:    $url = 'http://covers.openlibrary.org/b/isbn/' . $_GET['isn'] .
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:271:function processImageURL($url, $cache = true)
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:431:    if ($image = @file_get_contents($url)) {
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:401:    $url = 'http://covers.librarything.com/devkey/' . $id . '/' . $_GET['size'] .
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:271:function processImageURL($url, $cache = true)
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:403:    if ($image = @file_get_contents($url)) {
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:358:    $url .= "/index.aspx?type=xw12&isbn={$_GET['isn']}/{$size}&client={$id}";
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:271:function processImageURL($url, $cache = true)
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:359:    if ($image = @file_get_contents($url)) {
+  [0m [1;31m[FOPEN]
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:429:    $url = 'http://covers.openlibrary.org/b/isbn/' . $_GET['isn'] .
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:271:function processImageURL($url, $cache = true)
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:431:    if ($image = @file_get_contents($url)) {
+ [FOPEN]
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:401:    $url = 'http://covers.librarything.com/devkey/' . $id . '/' . $_GET['size'] .
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:271:function processImageURL($url, $cache = true)
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:403:    if ($image = @file_get_contents($url)) {
+ [FOPEN]
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:358:    $url .= "/index.aspx?type=xw12&isbn={$_GET['isn']}/{$size}&client={$id}";
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:271:function processImageURL($url, $cache = true)
+         [FOPEN]/home/scary/victims//vufind-1.3/vufind-1.3/web/bookcover.php:359:    if ($image = @file_get_contents($url)) {
+         
+         
+         [0m [1;31m[EXEC]
+         [EXEC]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/extras/extra_languages/tw_utf-8/html/install/index.php:92:$custom_fname = './custom/install_'.$op.'.inc.php';
+         [EXEC]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/extras/extra_languages/tw_utf-8/html/install/index.php:81:if(!empty($_POST['op'])) {
+         [EXEC]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/extras/extra_languages/tw_utf-8/html/install/index.php:82:    $op = $_POST['op'];
+         [EXEC]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/extras/extra_languages/tw_utf-8/html/install/index.php:83:} elseif(!empty($_GET['op'])) {
+         [EXEC]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/extras/extra_languages/tw_utf-8/html/install/index.php:84:    $op = $_GET['op'];
+         [EXEC]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/extras/extra_languages/tw_utf-8/html/install/index.php:86:    $op = 'langselect';
+         [EXEC]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/extras/extra_languages/tw_utf-8/html/install/index.php:90:$op=basename($op);
+         [EXEC]/home/scary/victims//Package_Legacy_2_2_1_Beta_3/r2_2_01_Beta_3/extras/extra_languages/tw_utf-8/html/install/index.php:96:        include $custom_fname;
+         
+         
+         
+[root@node5 victims]# grep EXEC *log
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1330:config_load::$this:require_once($this->_get_plugin_filepath('function', 'config_load'));
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1330:config_load::$this:require_once($this->_get_plugin_filepath('function', 'config_load'));
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1878:config_load::config_load::_config_load::config_load::config_load::_config_load::_smarty_include::$_smarty_compile_path:include($_smarty_compile_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1265:$_smarty_compile_path:include($_smarty_compile_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1272:$_smarty_compile_path:include($_smarty_compile_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1460:config_load::config_load::_config_load::config_load::config_load::_config_load::_compile_source::$this:require_once(SMARTY_DIR . $this->compiler_file);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1463:config_load::config_load::_config_load::config_load::config_load::_config_load::_compile_source::$this:require_once($this->compiler_file);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1330:config_load::$this:require_once($this->_get_plugin_filepath('function', 'config_load'));
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1330:config_load::$this:require_once($this->_get_plugin_filepath('function', 'config_load'));
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1878:config_load::config_load::_config_load::config_load::config_load::_config_load::_smarty_include::$_smarty_compile_path:include($_smarty_compile_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1265:$_smarty_compile_path:include($_smarty_compile_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1272:$_smarty_compile_path:include($_smarty_compile_path);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1460:config_load::config_load::_config_load::config_load::config_load::_config_load::_compile_source::$this:require_once(SMARTY_DIR . $this->compiler_file);
+batavi-1.2.2.AUTO_SCARY.log:[EXEC]../victims//batavi-1.2.2/ext/smarty/demo/../libs/Smarty.class.php:1463:config_load::config_load::_config_load::config_load::config_load::_config_load::_compile_source::$this:require_once($this->compiler_file);
+
+x2engine:
+$lang = isset($_GET['language']) ? strtolower($_GET['language']) : ''; // get language setting, default to none (english)
+
+if (array_key_exists($lang, $languages))    // is this language installed?
+    $installMessageFile = "protected/messages/$lang/install.php";
+
+
+  [XSS]/home/scary/victims//booking_calendar_10e-112-10-18/booking_calendar/includes/widgets/loc_nav_widget.php:25:               <?php echo ($_REQUEST['loc'] == $location_id) ? $highlight_style : ''; ?>><b><?php echo $location_display[$location_id]; ?></b></a><br />
+  
+  require_once("../inc/vmsql.".$_data['dbtype'].".php");
+
+        $login=($_GET["login"])?$_GET["login"]:$_POST["login"];
+        if (file_exists ("conf$login.php")) {
+                require "conf$login.php";
+        } else {
+                require "conf.php";
+        }

@@ -1,0 +1,5 @@
+# SCARY auto parser tests README
+### dir tests contains list of parser tests, each of them consists of two files:
+### test_name.php - PHP script to analyze
+### test_name.params - options for dive inferno (which can include -sensitivity and output group information (same as in the $debug_config keys)
+### test_name.result - expected correct output preg (to avoid complications with differences in outputs resulting from various levels of verbosity, we just assume test is passed if expected preg matches output (empty for no output)

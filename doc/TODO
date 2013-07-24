@@ -1,0 +1,56 @@
+[ PHP APPS REPOS TO SCAN ]
+ Repos:
+	http://www.phpkode.com/
+	http://code.google.com/p/
+	http://sourceforge.net/directory/language:php/freshness:recently-updated/
+	http://www.download32.com
+	
+[ SCARY ]
+
+BUG FIXES
+	- script hangs on roundcube and some eifensth (memory usage goes up) and on this too /home/scary/victims//precurio-2012-10-03/precurio/library/Bvb/Grid/Source/Interface.php	- investigated it, this is a result of object code messing the parser (interface definitions make namespaces fucked)	- looks like it's fixed now ;]
+
+	- FALSE_POSITIVES (the whole list is in that file)
+		- A whole bunch of SQL falses ;/	 	  	
+	 - fix &&,|| bug Unmatched ) in regex; marked by <-- HERE in m/\$cs_main\['ajax'\]), Unmatched ( in regex; marked by <-- HERE in m/\$db_row\['status'\] && ( <-- HERE \$db_row\['status'\]\b/ at scary.pl line 328, <$FILE> line 82, Unmatched ( in regex; marked by <-- HERE in m/( <-- HERE \$core_config\['user'\]\['status'\] &&(\$core_config\['user'\]\['status'\])/ at scary.pl line 1019, <$FILE> line 233. , precurio/UPGRADE.txt  Unmatched ( in regex; marked by <-- HERE in m/\$dep\['refColumns'\]\[array_search
+	  - [WARNING] set_final_cal_vuln{exec} called against empty variable on:                    require_once $path; // prefixed by PIWIK_INCLUDE_PATH
+	  - still much ram is consumed (vtigerorm/graph.php in salesplatform for instance) 
+	  
+	  - set final call vulns seems to miss the variable when called with no brackets
+	  - fix this: "we have to remove those when function block ends, this will affect other functions, some false positives will rise from this"
+	  - problem - virtual lines are incremented after meeting semicolons, which is not equal to meeting instructions (assignments), sometimes it can confuse the parser, like htmlspecialchars(echo($_GET['a'])); - assuming that echo also returns its argument, this would be false negative when it's not
+	  
+IMPROVEMENTS	 
+	 	- preg_replace with 'e' flag eval (imperfection with parameters parsing detected again, cannot proceed with preg_replace eval until this is done)
+		- implement conditional sanitizing (conditional_sanitizing.php)  
+		- anonymous functions, variable functions, variable variables
+		- list call support
+		- parse_expression function needs more knowledge about what it's expecting (determined), it has to call braces properly to handle code well  		
+		- check this one: $GLOBALS['admin_ajax_request'] = true; (add $GLOBALS support)
+	 	- extend list of vulnerable functions
+	 	- extend auto tests with positive results found till this moment?
+		- ifs support: when there's no alternative to our value, like this: if($_GET['sth']) $_GET['sth']=2; else $_GET['sth']=3; # detect such cases just as secure calls in ifs (they are less sure than those outside conditionals),. (to narrow down the number of false positives; if value is initialized and there are no conditional statements in the track - it can't be vulnerable
+		 - cast operator
+    	 - sequence of function definitions also unfold its impact (functions13.php), however the mechanism works great ;] (those merges, so as the bug calculations, could be performed at the end of the scary execution (now the problem is in the knowledge about functions which hasn't been read currently))
+    	 - clean up the sensitivity stuff (ifs found, untainting, register globals)
+    	 - multiline function calls
+		 - implement solution for non-direct taint checking
+				1. save all SQL tables and filepaths where user controlled data is put in some metadata format in the projects directory with taint checking information
+				2. save all variables which are pulled out from all databases and filepaths in some metadata format in the procects directory with taint checking information
+				3. after SCA-rying the last file iterate over those and check for correlated metadata, include results into report :>
+		- add filter functions group support
+		- foreach support
+		- add exceptions to tainted globals, like $_SERVER['DOCUMENT_ROOT'] ?
+		- mark session poisoning required in the output
+		- check cut_vars again
+		- check cutoff_index
+		- file uploads support
+		- object code
+		- implement unserialize	http://www.exploit-db.com/exploits/22547/
+		- improve SQL injections classifying
+    	- clean the code
+		- automate process of flaws testing, reports and sploits creation
+		- think about detection of logical errors and other sophisticated issues (CSRF, session poisoning (heavy stuff)), look in more detail to citrix project cond gave me with poor regexps
+		- implement control injection?
+		- finish the collector	(problems with sourceforge, make sure cookies support and gzip are working fine, if nothing helps, think about chickenfoot/autoit/sikuli alternative, however it looks like it will work with google code!)
+		- new, dedicated machine for scary multitasking scheduler
