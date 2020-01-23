@@ -1,15 +1,8 @@
 #!/usr/bin/perl
 # SCARY - Source Code Analyzer Replaces Yourself
 # coded by ewilded
-# ALL RIGHTS RESERVED
-# YOU DON'T HAVE ANY PERMISSION TO COPY, REDISTRIBUTE OR PROBABLY EVEN READ OR USE THIS CODE
-# $this->is(my $rifle);  ## IT is my !life
-# 'SCARY' PHP source code analysis tool by ewilded created at Thu Feb 25 2010, reborn at Mar 2011, pushed forward around 2012, given away at 07.2013
-# Hereby, with a heavy heart I am giving my lovely toy away due lack of time to even play with it :(
-# From now it is licensed under the GPL v 3 license.
+# Licensed under the GPL v 3 license.
 # For features and capabilities, see README for details.
-# To see my dead dreams, see TODO file.
-
 
 # Sidenote;  http://w3techs.com/technologies/details/pl-php/5.3/all, good to know
 
@@ -47,7 +40,7 @@ my @xss_vulnerable_functions=(@sql_vulnerable_functions, ('echo','printf','print
 my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file','fwrite','fputs'); 
 my @fopen_vulnerable_functions=('file_get_contents', 'fopen','file','fread');
 my @shell_vulnerable_functions=('exec', 'shell_exec', 'system', 'popen', 'passthru', 'proc_open', 'pcntl_proc_open','pcntl_exec');
-my @eval_vulnerable_functions=('eval'); # unserialize
+my @eval_vulnerable_functions=('eval', 'create_function'); # unserialize
 ## List of sanitizing and checking functions, which use on user supplied input decreases probability of found security issue
 my @filtering_functions=('preg_replace','ereg_replace','eregi_replace','str_replace','strtr', 'str_ireplace','substr_replace');
 ## uniwersalne funkcje sprawdzajace
