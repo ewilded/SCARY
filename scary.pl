@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# SCARY - Source Code Analyzer Replaces Yourself
+# SCARY - Source Code Analyzer Replaces You
 # coded by ewilded
 # Licensed under the GPL v 3 license.
 # For features and capabilities, see README for details.
@@ -1694,6 +1694,7 @@ sub report_vuln
 	$rate.='-REGISER_GLOBALS_REQUIRED' if($reg_globals);
 	$bug_group =~ tr/a-z/A-Z/;
 	my @report_desc_lines=split("\n",$report_desc);
+	$report_desc_lines[scalar(grep $_,@report_desc_lines)-1]="[FINAL]".$report_desc_lines[scalar(grep $_,@report_desc_lines)-1]; ## mark the final call for easier result grouping
 	foreach my $trace_line(@report_desc_lines) 
 	{
 		chomp($trace_line);
@@ -1886,7 +1887,7 @@ switch($cmd)
 			{
 				#print "$dirname_left/.htaccess found, analysing...\n";
 				# some analysis and conditinal 
-				$evil_htaccess_found=1 if(`grep 'deny from all' $dirname_left/.htaccess`);
+				$evil_htaccess_found=1 if(`grep -i 'deny from all' $dirname_left/.htaccess`);
 				last;
 			}
 			last if($document_root eq $dirname_left);
