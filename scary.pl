@@ -1841,9 +1841,9 @@ switch($cmd)
 		goto entry_points_found; ## temporary fake, this is not as important and fucks down performance
 		foreach my $potential_entry(@entry_files)
 		{
-			chomp($potential_entry);
-			print "Running perl $0 entry_point_detect $potential_entry $work_dir\n";
-				if(`perl $0 entry_point_detect $potential_entry $work_dir`=~/YES/)
+			chomp($potential_entry); # timeout 30 to avoid instances hanging due to buggy parsing (infinite loops etc.)
+			print "Running timeout 30 perl $0 entry_point_detect $potential_entry $work_dir\n";
+				if(`timeout 30 perl $0 entry_point_detect $potential_entry $work_dir`=~/YES/)
 				{
 					print "Entry point detected: $potential_entry\n";
 					push(@entry_points,$potential_entry);
@@ -1857,9 +1857,9 @@ switch($cmd)
 		print "\n\n\nAUTO SCA $work_dir STARTS\n\n\n";
 		foreach my $entry(@entry_points)
 		{
-			chomp($entry);
-			print "Running perl $0 sca $entry\n";
-			system("perl $0 sca $entry -INCLUDE=0 -REGISTER=0  -CALL=0 -DEBUG=0 -FUNCTION_DEFINITION=0 -EXPRESSION=0 -LIST_VARIABLES=0 -MERGE=0 -ERROR=0 -WARNING=0 -RESOLVE=0 -MATCH=0"); ## run in quiet mode to limit the logs weight
+			chomp($entry); # timeout 30 to avoid instances hanging due to buggy parsing (infinite loops etc.)
+			print "Running timeout 30 perl $0 sca $entry\n";
+			system("timeout 30 perl $0 sca $entry -INCLUDE=0 -REGISTER=0  -CALL=0 -DEBUG=0 -FUNCTION_DEFINITION=0 -EXPRESSION=0 -LIST_VARIABLES=0 -MERGE=0 -ERROR=0 -WARNING=0 -RESOLVE=0 -MATCH=0"); ## run in quiet mode to limit the logs weight
 		}
 	}
 	case 'entry_point_detect' 
