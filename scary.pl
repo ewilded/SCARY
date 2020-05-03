@@ -34,8 +34,7 @@ $debug_config{'SUMMARY'}=1;
 my @exec_vulnerable_functions=('include', 'include_once','require_once','require'); 
 my @sql_vulnerable_functions=('mysql_query','mysqli_query','mysql_unbuffered_query','oci_execute','cubrid_execute','sqlsrv_prepare','pg_prepare');
 my @xss_vulnerable_functions=(@sql_vulnerable_functions, ('echo','print','printf','print_r','var_dump','fwrite','fputs','file_put_contents','flush','ob_flush','fputcsv'));
-## not implemented:
-my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file'); 
+my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file'); ## not implemented
 my @fopen_vulnerable_functions=('file_get_contents', 'fopen','file');
 my @shell_vulnerable_functions=('exec', 'shell_exec', 'system', 'popen', 'passthru', 'proc_open', 'pcntl_proc_open','pcntl_exec','expect_popen','ssh2_exec');
 my @eval_vulnerable_functions=('eval','create_function','register_shutdown_function','register_thick_function','forward_static_call','forward_static_call_array','call_user_func', 'call_user_func_array','ini_set','unserialize'); # create_function DEPRECATED as of PHP 7.2.0 | arbitrary ini_set can be abused in a number of ways, e.g. by setting the  auto_append_file | unserialize added temporarily, will create a separate category for it | interestingly, 'eval' cannot be registered with register_shutdown_function, but shell_exec can - thus adding register_shutdown_function here, also samae goes for call_user_func and call_user_func_array :D - what about set_error_handler and set_exception_handler? what about UI Execution scheduler?
@@ -48,7 +47,6 @@ ctype_digit','ctype_xdigit','intval','md5','mktime'); ## functions that give lim
 my @escape_shell_functions=(); # ('escapeshellarg','escapeshellcmd'); ## for now let's skip these and leave all relevant calls for manual inspection, allowing false positives
 my @sql_num_checking_functions=('is_numeric','is_int','intval');
 #13:37 <&condy> albo rzutowanie (int)
-my @file_exists_functions=('file_exists'); ## it's just RFI/LFI distinguishing function, it actually degrades RFI to LFI if no other reliable securing functions are in run
 ## add is_uploaded_file and implement file uploads
 my @xss_filtering_functions=('htmlspecialchars', 'htmlentities');
 my @sql_filtering_functions=('addslashes', 'mysql_escape_string', 'mysql_real_escape_string');
@@ -1270,7 +1268,6 @@ sub parse_expression
 						## [UPLOAD] - not implemented
 						## ADDITIONALLY 'UNIVERSAL' CHECKS SECTION
 						## Ok, question - shall it be volatile or permanent? It could depend on the sensibility setting, for now let's just set it as volatile
-						&secure_var('file_exists_checked','volatile',$params_tracked_variable,$curr_local_virtual_line_number,'','')  if(&in_array($called_function,"@file_exists_functions"));
 						&secure_var('array_checked','volatile',$params_tracked_variable,$curr_local_virtual_line_number,'','')  if(&in_array($called_function,"@array_functions"));
 						if(&in_array($called_function,"@filtering_functions"))
 						{
