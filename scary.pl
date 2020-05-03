@@ -50,18 +50,19 @@ my @sql_num_checking_functions=('is_numeric','is_int','intval');
 ## add is_uploaded_file and implement file uploads
 my @xss_filtering_functions=('htmlspecialchars', 'htmlentities');
 my @sql_filtering_functions=('addslashes', 'mysql_escape_string', 'mysql_real_escape_string');
-my @sql_num_filtering_functions=('int','settype','intval','(int)','(float)');  # commented out 'prepare', moving it to vuln funnctions - as this solely depends on in WHAT argument the user-supplied value lands, so we now favor false positives
+my @sql_num_filtering_functions=('int','settype','intval','(int)','(float)');  # commented out 'prepare', moving it to vuln functions - as this solely depends on in WHAT argument the user-supplied value lands, so we now favor false positives
 
 my @final_call_vulnerable_keys=('xss','sql','exec','shell','fopen','eval'); # + upload
 ## filtered_groups array is used for merging between namespaces
-my @filtered_groups=('xss','sql','exec','shell','sql_filtered','sql_num_checked','sql_num_filtered','file_exists_checked','array_checked','universal_checked','universal_filtered');
-## This hash contains relation between final_call_vulnerable keys (vulnerable calls) and corresponing groups of functions that can secure them along with certainty rate
+my @filtered_groups=('xss','sql','exec','shell','sql_filtered','sql_num_checked','sql_num_filtered','array_checked','universal_checked','universal_filtered');
+
 my @php_predefined_constants=('PHP_VERSION','PHP_MAJOR_VERSION', 'PHP_MINOR_VERSION', 'PHP_RELEASE_VERSION', 'PHP_VERSION_ID',
 'PHP_EXTRA_VERSION', 'PHP_ZTS', 'PHP_DEBUG', 'PHP_MAXPATHLEN', 'PHP_OS', 'PHP_SAPI', 'PHP_EOL', 'PHP_INT_MAX', 'PHP_INT_SIZE', 'DEFAULT_INCLUDE_PATH', 'PEAR_INSTALL_DIR', 'PEAR_EXTENSION_DIR', 'PHP_EXTENSION_DIR', 'PHP_PREFIX', 'PHP_BINDIR', 'PHP_BINARY', 'PHP_MANDIR', 'PHP_LIBDIR', 'PHP_DATADIR', 'PHP_SYSCONFDIR', 'PHP_LOCALSTATEDIR', 'PHP_CONFIG_FILE_PATH', 'PHP_CONFIG_FILE_SCAN_DIR', 'PHP_SHLIB_SUFFIX','E_ERROR', 'E_WARNING', 'E_PARSE', 'E_NOTICE', 'E_CORE_ERROR', 'E_CORE_WARNING', 'E_COMPILE_ERROR', 'E_COMPILE_WARNING', 'E_USER_ERROR', 'E_USER_WARNING', 'E_USER_NOTICE', 'E_DEPRECATED', 'E_USER_DEPRECATED', 'E_ALL', 'E_STRICT', '__COMPILER_HALT_OFFSET__', 'TRUE',
 'FALSE', 'NULL','true','false','null','__CLASS__', '__DIR__', '__FILE__', '__FUNCTION__', '__LINE__', '__METHOD__', '__NAMESPACE__', '__TRAIT__');
 my @php_builtins=('__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'callable', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'unset', 'use', 'var', 'while', 'xor');
 my @php_funcion_like_language_constructs=('return','require','require_once','print','include_once','include','echo','die','exit','eval','global'); ## this list is used to replace parenthesis-less calls to ones with parenthesis to simplify the parsing process (these are functions (or rather 'procedures') from our point of view)
 ## among all those language constructs, there are few that work as functions but are not functions
+## Bellow hash contains relations between final_call_vulnerable keys (vulnerable calls) and corresponing groups of functions that can secure them along with the certainty rate (with higher value meaning most secure))
 my %final_secure_keys_relation=();
 $final_secure_keys_relation{'xss'}={'xss'=>4};
 $final_secure_keys_relation{'sql'}={'sql_num_filtered'=>4,'sql_filtered'=>4,'sql_num_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1,'array_checked'=>4};
@@ -143,7 +144,7 @@ sub logme
 	my $outline = shift;
 	if($outline=~/^\[((XSS)|(SQL)|(RFI)|(LFI)|(EXEC)|(EVAL)|(SHELL)|(FOPEN)|(UPLOAD))/)
 	{
-			if($outline=~/-PROBABLY/)
+			if($outline=~/-TENTATIVE/)
 			{
 				print color 'bold green';
 			}
@@ -330,7 +331,7 @@ sub set_curr_line_tracked
 	{
 		# if the variable is global (currently we don't care if it's initialized or not, as we do with other tainted vals (no ifs support and 'positive' approach)
 		return TAINTED_VAL if(scalar(@function_define_trace) eq 0); ### however some value check would be appreciated, we have to store information if the empty value was set by default or not
-		return LOCAL_VAL; # otherwise it's local
+		return LOCAL_VAL; # otherwise it's local, we are within a function/method definition block
 	}
 	return NOT_TRACKED;
 	
@@ -1548,8 +1549,8 @@ sub calculate_bugs
 			 		$report_file=$final_call_vulnerable{$bug_group}{$variable_address}[$i]{'file'};
 					$nullbyte=$final_call_vulnerable{$bug_group}{$variable_address}[$i]{'nullbyte'};
 			 		$rate=0;			 		
-					## it increases the rate variable as it encounters any security methods used
-					## the higher is the rate value, the smaller chance there is a flaw, 0 means 100% sure flaw, 1 means ~50% flaw, 4 means 0%, 2 means ~25 % flaw (a sum of two weak (1 rate) mechanisms
+					## it increases the security rate variable as it encounters any security methods used
+					## the higher is the security rate value, the smaller the chance the call is vulnerable (0 means 100% certainty of the flaw, 1 is more tentative flaw, 2 means tentative secure, 3 means rather secure, 4 means secure)
 			 		foreach my $secure_bug_group(keys %{$final_secure_keys_relation{$bug_group}})
 			 		{
 							next if(scalar(keys %{$secured{$secure_bug_group}{$variable_address}}) eq 0); ## no security record at all
@@ -1609,7 +1610,7 @@ sub calculate_bugs
 									next if($secure_internal_var ne $vuln_var&&$secure_line_internal_start); # make sure vlines belong to the same namespace ## THIS LOOKS OK (skip the security record values if the namespaces don't match to avoid false negatives)
 									## for permanently secured, check the sequence ## THIS LOOKS OK 
 									## increase the rate of security for this variable appropriate for the secure_bug_group functions group if range conditions are met
-									if(($secure_line_external_start<$vuln_line_external&&($secure_line_external_stop eq ''||$secure_line_external_stop>$vuln_line_external))||($secure_line_external_start eq $vuln_line_external&&($secure_line_internal_start ne ''&&$vuln_line_internal ne ''&&$secure_line_internal_start<$vuln_line_internal)))
+									if(($secure_line_external_start<$vuln_line_external&&($secure_line_external_stop eq ''||$secure_line_external_stop>$vuln_line_external))||($secure_line_external_start eq $vuln_line_external&&($secure_line_internal_start ne ''&&$vuln_line_internal ne ''&&$secure_line_internal_start<$vuln_line_internal))) 
 									{
 										#print "$secure_internal_var $durability secured record found (line: $secure_line_external_start)\n";
 								#		print "$variable_address (internal:$secure_internal_var) $durability secured record found (line: $secure_line_external_start)\n";
@@ -1674,7 +1675,7 @@ sub report_vuln
 	my $report_desc=shift;
 	my $nullbyte=shift;
 	## rate is to be estimated
-	$rate='-PROBABLY' if($rate>0);
+	$rate='-TENTATIVE' if($rate>0);
 	$rate='' if($rate eq 0);
 	my $reg_globals=1;
 	foreach my $s_global(@tracked_superglobals)
@@ -1829,7 +1830,6 @@ switch($cmd)
 	case 'auto_sca'
 	{
 		$curr_line_tracked=LOCAL_VAL;
-		&quiet_mode();
 		$work_dir=$ARGV[1];
 		my @entry_files=`find $work_dir -iname '*.php'`;
 		my @entry_points=@entry_files;
@@ -1854,7 +1854,7 @@ switch($cmd)
 		{
 			chomp($entry); # timeout 30 to avoid instances hanging due to buggy parsing (infinite loops etc.)
 			print "Running timeout 30 perl $0 sca $entry\n";
-			system("timeout 30 perl $0 sca $entry -INCLUDE=0 -REGISTER=0  -CALL=0 -DEBUG=0 -FUNCTION_DEFINITION=0 -EXPRESSION=0 -LIST_VARIABLES=0 -MERGE=0 -ERROR=0 -WARNING=0 -RESOLVE=0 -MATCH=0"); ## run in quiet mode to limit the logs weight
+			system("timeout 30 perl $0 sca $entry -INCLUDE=0 -REGISTER=0  -CALL=0 -DEBUG=0 -FUNCTION_DEFINITION=0 -EXPRESSION=0 -LIST_VARIABLES=0 -MERGE=0 -ERROR=1 -WARNING=0 -RESOLVE=0 -MATCH=0"); 
 		}
 	}
 	case 'entry_point_detect' 
