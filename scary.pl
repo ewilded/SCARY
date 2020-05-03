@@ -32,27 +32,27 @@ $debug_config{'MATCH'}=1;
 $debug_config{'SUMMARY'}=1;
 # vulnerable functions grouped by the kind of security issue (i'll extend this list later with the help of php.net :D)
 my @exec_vulnerable_functions=('include', 'include_once','require_once','require'); 
-my @sql_vulnerable_functions=('mysql_query','mysqli_query','oci_execute');
-my @xss_vulnerable_functions=(@sql_vulnerable_functions, ('echo','printf','print_r','var_dump','fwrite','fputs','file_put_contents'));
+my @sql_vulnerable_functions=('mysql_query','mysqli_query','mysql_unbuffered_query','oci_execute','cubrid_execute','sqlsrv_prepare','pg_prepare');
+my @xss_vulnerable_functions=(@sql_vulnerable_functions, ('echo','print','printf','print_r','var_dump','fwrite','fputs','file_put_contents','flush','ob_flush','fputcsv'));
 ## not implemented:
-my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file','fwrite','fputs'); 
-my @fopen_vulnerable_functions=('file_get_contents', 'fopen','file','fread');
-my @shell_vulnerable_functions=('exec', 'shell_exec', 'system', 'popen', 'passthru', 'proc_open', 'pcntl_proc_open','pcntl_exec');
-my @eval_vulnerable_functions=('eval', 'create_function'); # unserialize
+my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file'); 
+my @fopen_vulnerable_functions=('file_get_contents', 'fopen','file');
+my @shell_vulnerable_functions=('exec', 'shell_exec', 'system', 'popen', 'passthru', 'proc_open', 'pcntl_proc_open','pcntl_exec','expect_popen','ssh2_exec');
+my @eval_vulnerable_functions=('eval','create_function','register_shutdown_function','register_thick_function','forward_static_call','forward_static_call_array','call_user_func', 'call_user_func_array','ini_set','unserialize'); # create_function DEPRECATED as of PHP 7.2.0 | arbitrary ini_set can be abused in a number of ways, e.g. by setting the  auto_append_file | unserialize added temporarily, will create a separate category for it | interestingly, 'eval' cannot be registered with register_shutdown_function, but shell_exec can - thus adding register_shutdown_function here, also samae goes for call_user_func and call_user_func_array :D - what about set_error_handler and set_exception_handler? what about UI Execution scheduler?
 ## List of sanitizing and checking functions, which use on user supplied input decreases probability of found security issue
 my @filtering_functions=('preg_replace','ereg_replace','eregi_replace','str_replace','strtr', 'str_ireplace','substr_replace');
-## uniwersalne funkcje sprawdzajace
+## Universal sanitation functions
 my @checking_functions=('preg_match','strstr','strpos','ereg', 'eregi');
 my @array_functions=('array_key_exists','in_array','array_search','switch','filter_var','md5','basename','ctype_ alnum','ctype_ alpha','ctype_ cntrl','
 ctype_digit','ctype_xdigit','intval','md5','mktime'); ## functions that give limited results
-my @escape_shell_functions=(); # ('escapeshellarg','escapeshellcmd'); ## shellexecs I don't know how these actually secure anything, let's skip them
+my @escape_shell_functions=(); # ('escapeshellarg','escapeshellcmd'); ## for now let's skip these and leave all relevant calls for manual inspection, allowing false positives
 my @sql_num_checking_functions=('is_numeric','is_int','intval');
 #13:37 <&condy> albo rzutowanie (int)
 my @file_exists_functions=('file_exists'); ## it's just RFI/LFI distinguishing function, it actually degrades RFI to LFI if no other reliable securing functions are in run
 ## add is_uploaded_file and implement file uploads
 my @xss_filtering_functions=('htmlspecialchars', 'htmlentities');
 my @sql_filtering_functions=('addslashes', 'mysql_escape_string', 'mysql_real_escape_string');
-my @sql_num_filtering_functions=('int','settype','intval','(int)','(float)','prepare'); 
+my @sql_num_filtering_functions=('int','settype','intval','(int)','(float)');  # commented out 'prepare', moving it to vuln funnctions - as this solely depends on in WHAT argument the user-supplied value lands, so we now favor false positives
 
 my @final_call_vulnerable_keys=('xss','sql','exec','shell','fopen','eval'); # + upload
 ## filtered_groups array is used for merging between namespaces
