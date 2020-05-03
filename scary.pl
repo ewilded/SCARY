@@ -34,8 +34,8 @@ $debug_config{'SUMMARY'}=1;
 my @exec_vulnerable_functions=('include', 'include_once','require_once','require'); 
 my @sql_vulnerable_functions=('mysql_query','mysqli_query','mysql_unbuffered_query','oci_execute','cubrid_execute','sqlsrv_prepare','pg_prepare');
 my @xss_vulnerable_functions=(@sql_vulnerable_functions, ('echo','print','printf','print_r','var_dump','fwrite','fputs','file_put_contents','flush','ob_flush','fputcsv'));
-my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file'); ## not implemented
-my @fopen_vulnerable_functions=('file_get_contents','fopen','file','readfile','copy');
+my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file'); 
+my @fopen_vulnerable_functions=('file_get_contents','fopen','file','readfile','copy','readlink','rename','link','symlink'); ## stuff like readlink() is useless for direct info disclosure, but should work well with Windows and UNC paths, we should create a separate category for these, as there's plenty more read functions taking file paths as args, while stuff like 'link' and 'rename' have potential for code execs (renaming uploaded files into .php), DoS and removing sec controls like .htaccess files
 my @shell_vulnerable_functions=('exec', 'shell_exec', 'system', 'popen', 'passthru', 'proc_open', 'pcntl_proc_open','pcntl_exec','expect_popen','ssh2_exec');
 my @eval_vulnerable_functions=('eval','create_function','register_shutdown_function','register_thick_function','forward_static_call','forward_static_call_array','call_user_func', 'call_user_func_array','ini_set','unserialize'); # create_function DEPRECATED as of PHP 7.2.0 | arbitrary ini_set can be abused in a number of ways, e.g. by setting the  auto_append_file | unserialize added temporarily, will create a separate category for it | interestingly, 'eval' cannot be registered with register_shutdown_function, but shell_exec can - thus adding register_shutdown_function here, also samae goes for call_user_func and call_user_func_array :D - what about set_error_handler and set_exception_handler? what about UI Execution scheduler?
 ## List of sanitizing and checking functions, which use on user supplied input decreases probability of found security issue
@@ -47,12 +47,11 @@ ctype_digit','ctype_xdigit','intval','md5','mktime'); ## functions that give lim
 my @escape_shell_functions=(); # ('escapeshellarg','escapeshellcmd'); ## for now let's skip these and leave all relevant calls for manual inspection, allowing false positives
 my @sql_num_checking_functions=('is_numeric','is_int','intval');
 #13:37 <&condy> albo rzutowanie (int)
-## add is_uploaded_file and implement file uploads
 my @xss_filtering_functions=('htmlspecialchars', 'htmlentities');
 my @sql_filtering_functions=('addslashes', 'mysql_escape_string', 'mysql_real_escape_string');
 my @sql_num_filtering_functions=('int','settype','intval','(int)','(float)');  # commented out 'prepare', moving it to vuln functions - as this solely depends on in WHAT argument the user-supplied value lands, so we now favor false positives
 
-my @final_call_vulnerable_keys=('xss','sql','exec','shell','fopen','eval'); # + upload
+my @final_call_vulnerable_keys=('xss','sql','exec','shell','fopen','eval','upload'); 
 ## filtered_groups array is used for merging between namespaces
 my @filtered_groups=('xss','sql','exec','shell','sql_filtered','sql_num_checked','sql_num_filtered','array_checked','universal_checked','universal_filtered');
 
@@ -66,10 +65,11 @@ my @php_funcion_like_language_constructs=('return','require','require_once','pri
 my %final_secure_keys_relation=();
 $final_secure_keys_relation{'xss'}={'xss'=>4};
 $final_secure_keys_relation{'sql'}={'sql_num_filtered'=>4,'sql_filtered'=>4,'sql_num_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1,'array_checked'=>4};
-$final_secure_keys_relation{'exec'}={'file_exists_checked'=>1,'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
+$final_secure_keys_relation{'exec'}={'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
 $final_secure_keys_relation{'shell'}={'shell'=>1,'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
 $final_secure_keys_relation{'fopen'}={'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
 $final_secure_keys_relation{'eval'}={'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
+$final_secure_keys_relation{'upload'}={'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
 
 # [DATA TRACKING VARIABLES]
 # namespace
@@ -1273,14 +1273,14 @@ sub parse_expression
 						&set_final_call_vulnerable('xss',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@xss_vulnerable_functions")); 
 			 			## [SQL]
 						&set_final_call_vulnerable('sql',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@sql_vulnerable_functions")); #
-			 			 my $nullbyte_required=1; 
-						 $nullbyte_required=0 if($last_resolved_path=~/$variable_preg$/);					 
-						 if(&in_array($called_function,"@exec_vulnerable_functions"))
+			 			my $nullbyte_required=1; 
+						$nullbyte_required=0 if($last_resolved_path=~/$variable_preg$/);					 
+						if(&in_array($called_function,"@exec_vulnerable_functions"))
 			 			{
-			 				## [INCLUDE/REQUIRE] (embedded here also local require system, since we changed behaviour of curr_line_tracked variable
+			 				## [INCLUDE/REQUIRE] (also the actual parser require logic is embedded here, since we changed behaviour of curr_line_tracked variable)
 			 				#print "[RESOLVE-INCLUDE] GOING TO RESOLVE $curr_call_param\n";			 				
 			 				my $include_resolved_call_param=$last_resolved_path;
-			 				while($curr_call_param=~	/$variable_preg/g)
+			 				while($curr_call_param=~/$variable_preg/g)
 			 				{
 			 					my $value='';
 			 					$value=$registered_variables{$1} if($registered_variables{$1} ne undef);
@@ -1311,10 +1311,11 @@ sub parse_expression
 						&set_final_call_vulnerable('fopen',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted,$nullbyte_required) if(&in_array($called_function,"@fopen_vulnerable_functions"));
 			 			## [EVAL]
 			 			&set_final_call_vulnerable('eval',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@eval_vulnerable_functions"));
-			 			## [SHELL]
+			 			## [UPLOAD]
+			 			&set_final_call_vulnerable('upload',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@upload_vulnerable_functions"));						
 			 			### END OF FLAW DETECTING SECTION, END OF CURRENT LINE TRACKING SECTION				  	  	
 						### END OF CURRENT NEW CORE
-					}	 ### END OF  USER_DEFINED/NATIVE ALTERNATIVE BLOCK					
+					}	### END OF  USER_DEFINED/NATIVE ALTERNATIVE BLOCK					
 					$param_index++;  ## parameter number
 		 		} ##END OF PARAMETERS FOREACH
 		 		#&logme("[WARNING] call params ($called_function($call_params)) do not contain tracked variable for $code") 	if(!$tracked_param_found&&$debug_config{'WARNING'});
@@ -1667,8 +1668,8 @@ sub report_vuln
 			last;
 		}
 	}
-	$rate.='-NULLBYTE_REQUIRED' if($nullbyte);
-	$rate.='-REGISER_GLOBALS_REQUIRED' if($reg_globals);
+	$rate.='-TERMINATOR_REQUIRED' if($nullbyte);
+	$rate.='-SECOND_ORDER' if($reg_globals);
 	$bug_group =~ tr/a-z/A-Z/;
 	my @report_desc_lines=split("\n",$report_desc);
 	$report_desc_lines[scalar(grep $_,@report_desc_lines)-1]="[FINAL]".$report_desc_lines[scalar(grep $_,@report_desc_lines)-1]; ## mark the final call for easier result grouping
