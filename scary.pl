@@ -35,7 +35,7 @@ my @exec_vulnerable_functions=('include', 'include_once','require_once','require
 my @sql_vulnerable_functions=('mysql_query','mysqli_query','mysql_unbuffered_query','oci_execute','cubrid_execute','sqlsrv_prepare','pg_prepare');
 my @xss_vulnerable_functions=(@sql_vulnerable_functions, ('echo','print','printf','print_r','var_dump','fwrite','fputs','file_put_contents','flush','ob_flush','fputcsv'));
 my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file'); ## not implemented
-my @fopen_vulnerable_functions=('file_get_contents', 'fopen','file');
+my @fopen_vulnerable_functions=('file_get_contents','fopen','file','readfile','copy');
 my @shell_vulnerable_functions=('exec', 'shell_exec', 'system', 'popen', 'passthru', 'proc_open', 'pcntl_proc_open','pcntl_exec','expect_popen','ssh2_exec');
 my @eval_vulnerable_functions=('eval','create_function','register_shutdown_function','register_thick_function','forward_static_call','forward_static_call_array','call_user_func', 'call_user_func_array','ini_set','unserialize'); # create_function DEPRECATED as of PHP 7.2.0 | arbitrary ini_set can be abused in a number of ways, e.g. by setting the  auto_append_file | unserialize added temporarily, will create a separate category for it | interestingly, 'eval' cannot be registered with register_shutdown_function, but shell_exec can - thus adding register_shutdown_function here, also samae goes for call_user_func and call_user_func_array :D - what about set_error_handler and set_exception_handler? what about UI Execution scheduler?
 ## List of sanitizing and checking functions, which use on user supplied input decreases probability of found security issue
