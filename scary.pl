@@ -1816,9 +1816,9 @@ switch($cmd)
 		print "\n\n\nAUTO SCA $work_dir STARTS\n\n\n";
 		foreach my $entry(`find $work_dir -iname '*.php'`)
 		{
-			chomp($entry); # timeout 30 to avoid instances hanging due to buggy parsing (infinite loops etc.)
-			print "Running timeout 30 perl $0 sca $entry\n";
-			system("timeout 30 perl $0 sca $entry -INCLUDE=0 -REGISTER=0  -CALL=0 -DEBUG=0 -FUNCTION_DEFINITION=0 -EXPRESSION=0 -LIST_VARIABLES=0 -MERGE=0 -ERROR=1 -WARNING=0 -RESOLVE=0 -MATCH=0"); 
+			chomp($entry); # timeout 60 to avoid instances hanging due to buggy parsing (infinite loops etc.)
+			print "Running timeout 60 perl $0 sca $entry\n";
+			system("timeout 60 perl $0 sca $entry -INCLUDE=0 -REGISTER=0  -CALL=0 -DEBUG=0 -FUNCTION_DEFINITION=0 -EXPRESSION=0 -LIST_VARIABLES=0 -MERGE=0 -ERROR=1 -WARNING=0 -RESOLVE=0 -MATCH=0"); 
 		}
 	}
 	default { &usage(); exit; }
