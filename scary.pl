@@ -4,8 +4,6 @@
 # Licensed under the GPL v 3 license.
 # For features and capabilities, see README for details.
 
-# Sidenote;  http://w3techs.com/technologies/details/pl-php/5.3/all, good to know
-
 package scary;
 use strict;
 use IO::Handle;
@@ -1765,7 +1763,7 @@ switch($cmd)
 			}
 		}
 		my $accuracy=$passed_tests/$tests_count*100;
-		print "Passed $passed_tests, failed $failed_tests of $tests_count (accuracy $accuracy%)\n";
+		printf "Passed $passed_tests, failed $failed_tests of $tests_count (accuracy %2.2f%%)\n",$accuracy;
 	}
 	case 'sca'
 	{
