@@ -124,8 +124,7 @@ my $project_name; ## (this is the last dir from project dir), therefore astguicl
 my $bugs='';
 my $warnings='';
 my $last_trace_append='';
-my $sca_mode='sca'; ### entry_point when entry point mode is applied
-my $is_entry_point=0;
+my $sca_mode='sca'; ### auto_sca for whole project directories, sca for single files
 my $prev_called_function='';
 my @parser_active=(0); ## this is set to 0 or to 1, depending on the <?php or ?> metting
 
@@ -344,8 +343,7 @@ sub set_curr_line_tracked
 	#		return LOCAL_VAL;	
 	#	}
 	#}
-	#return LOCAL_VAL if($sca_mode eq 'entry_point');
-	#return NOT_TRACKED;
+	#return LOCAL_VAL;
 }
 
 ## THIS METHOD REGISTERS NEW VARIABLE (SO IT SHOULD BE CALLED ONLY ONCE WHILE THE VALUE IS MET IN THE CODE)
@@ -917,7 +915,7 @@ sub parse_expression
 			 	$call_params.=$char;
 				if($bracket_met eq 1&&$bracket_count eq 0)
 				{
-						## skracamy matcha o tyle, ile zostanie z call params po wyjeciu znawiasowanych wyraen
+						## the match is shortened by the length of what is left from the string after cutting out the matches from the parenthesis
 						#print "[MATCH PRE DEBUG]: $match, call_params collected: $call_params\n";
 						$match=substr $match,0,length($match)-(length($call_params_matchoff)-length($call_params)); 
 						#print "[MATCH DEBUG] new match: $match\n";
@@ -930,24 +928,7 @@ sub parse_expression
 				$call_params=~s/^\s*\(//;
 				$call_params=~s/\)\s*$//;
 			}
-			$call_params=~s/\s*!\s*//g; ## remove
-			if($sca_mode  eq 'entry_point'&&scalar(@function_define_trace) eq 0)
-			{	
-				# for now the entry point detection mechanism is very basic, just checks if first function call is equal to defined or preg_match, that's it!
-#				print "prev_called_function: $prev_called_function\n";
-				if(($prev_called_function eq 'defined'||$prev_called_function eq 'preg_match')&&($called_function eq 'exit'||$called_function eq 'die'))
-				{
-					print "NO\n";
-					exit;
-				}
-				if($called_function ne 'defined'&&$called_function ne 'preg_match'&&$called_function ne 'define'&&$called_function ne 'if'&&$called_function ne 'elseif'&&$called_function ne 'switch'&&$called_function ne 'exit'&&$called_function ne 'die'&&$called_function ne 'array'&&$called_function ne 'dirname')
-				{
-					print "YES\n";
-					#print "$code:$line_number\n";
-					#print "function_define_trace: @function_define_trace\n";
-					exit;
-				}
-			}		
+			$call_params=~s/\s*!\s*//g; ## remove white chars and negations
 			$prev_called_function=$called_function;
 			## ADD REFERENCE SUPPORT HERE - > THIS IMPACTS THE LEFT_SIDE BEHAVIOUR
 			## for each iteration after commas separation we need to estimate curr_line_tracked state again
@@ -1831,77 +1812,13 @@ switch($cmd)
 	{
 		$curr_line_tracked=LOCAL_VAL;
 		$work_dir=$ARGV[1];
-		my @entry_files=`find $work_dir -iname '*.php'`;
-		my @entry_points=@entry_files;
-		goto entry_points_found; ## temporary fake, this is not as important and fucks down performance
-		foreach my $potential_entry(@entry_files)
-		{
-			chomp($potential_entry); # timeout 30 to avoid instances hanging due to buggy parsing (infinite loops etc.)
-			print "Running timeout 30 perl $0 entry_point_detect $potential_entry $work_dir\n";
-				if(`timeout 30 perl $0 entry_point_detect $potential_entry $work_dir`=~/YES/)
-				{
-					print "Entry point detected: $potential_entry\n";
-					push(@entry_points,$potential_entry);
-			}
-			else
-			{
-				print "No entry point at $potential_entry\n";
-			}
-		}
-		entry_points_found:
 		print "\n\n\nAUTO SCA $work_dir STARTS\n\n\n";
-		foreach my $entry(@entry_points)
+		foreach my $entry(`find $work_dir -iname '*.php'`)
 		{
 			chomp($entry); # timeout 30 to avoid instances hanging due to buggy parsing (infinite loops etc.)
 			print "Running timeout 30 perl $0 sca $entry\n";
 			system("timeout 30 perl $0 sca $entry -INCLUDE=0 -REGISTER=0  -CALL=0 -DEBUG=0 -FUNCTION_DEFINITION=0 -EXPRESSION=0 -LIST_VARIABLES=0 -MERGE=0 -ERROR=1 -WARNING=0 -RESOLVE=0 -MATCH=0"); 
 		}
-	}
-	case 'entry_point_detect' 
-	{
-		$is_entry_point=0;
-		&quiet_mode();
-		$f=$ARGV[1];
-		my $document_root=$ARGV[2];
-		if(not -f $f) { print "[ERROR] file $f does not exist!\n"; exit; }
-		my $evil_htaccess_found=0;
-		## find fucking htaccess
-		#my $dirname_left=&dir_name($f);
-		my $dirname_left=&dir_name($f);
-		#$document_root=&dir_name($document_root);
-		$dirname_left=~s/\/+$//; ## remove trailing slash if present
-		$document_root=~s/\/+$//; ## remove trailing slash if present
-		my $safety_cnt=0;
-		#print "[DEBUG: dirname_left: $dirname_left, document_root: $document_root\n";
-		while(1)
-		{
-			$safety_cnt++;
-			last if($safety_cnt eq 50);
-			print "Checking for $dirname_left/.htaccess...\n";
-			if(-f "$dirname_left/.htaccess")
-			{
-				#print "$dirname_left/.htaccess found, analysing...\n";
-				# some analysis and conditinal 
-				$evil_htaccess_found=1 if(`grep -i 'deny from all' $dirname_left/.htaccess`);
-				last;
-			}
-			last if($document_root eq $dirname_left);
-			$dirname_left=~s/\/[\w\.-]+$//; ## remove next dir from the string
-			$dirname_left=~s/\/+$//; ## remove trailing slash if present			 
-		}
-		if($evil_htaccess_found)
-		{
-				$is_entry_point=0;
-				goto after_file_analyse;
-		}
-		#$sca_mode='entry_point';
-		#analyse_file($f);
-		after_file_analyse:
-		#print "YES\n" if($is_entry_point);
-		#print "NO\n";
-		#exit;
-		print "YES";
-		exit;
 	}
 	default { &usage(); exit; }
 }
