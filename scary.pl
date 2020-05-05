@@ -44,7 +44,7 @@ my @filtering_functions=('preg_replace','ereg_replace','eregi_replace','str_repl
 my @checking_functions=('preg_match','strstr','strpos','ereg', 'eregi');
 my @array_functions=('array_key_exists','in_array','array_search','switch','filter_var','md5','basename','ctype_ alnum','ctype_ alpha','ctype_ cntrl','
 ctype_digit','ctype_xdigit','intval','md5','mktime'); ## functions that give limited results
-my @escape_shell_functions=(); # ('escapeshellarg','escapeshellcmd'); ## for now let's skip these and leave all relevant calls for manual inspection, allowing false positives
+my @escape_shell_functions=('escapeshellarg','escapeshellcmd'); 
 my @sql_num_checking_functions=('is_numeric','is_int','intval');
 #13:37 <&condy> albo rzutowanie (int)
 my @xss_filtering_functions=('htmlspecialchars', 'htmlentities');
