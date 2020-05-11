@@ -38,6 +38,7 @@ my @upload_vulnerable_functions=('file_put_contents', 'move_uploaded_file');
 my @fopen_vulnerable_functions=('file_get_contents','fopen','file','readfile','copy','readlink','rename','link','symlink'); ## stuff like readlink() is useless for direct info disclosure, but should work well with Windows and UNC paths, we should create a separate category for these, as there's plenty more read functions taking file paths as args, while stuff like 'link' and 'rename' have potential for code execs (renaming uploaded files into .php), DoS and removing sec controls like .htaccess files
 my @shell_vulnerable_functions=('exec', 'shell_exec', 'system', 'popen', 'passthru', 'proc_open', 'pcntl_proc_open','pcntl_exec','expect_popen','ssh2_exec');
 my @eval_vulnerable_functions=('eval','create_function','register_shutdown_function','register_thick_function','forward_static_call','forward_static_call_array','call_user_func', 'call_user_func_array','ini_set','unserialize'); # create_function DEPRECATED as of PHP 7.2.0 | arbitrary ini_set can be abused in a number of ways, e.g. by setting the  auto_append_file | unserialize added temporarily, will create a separate category for it | interestingly, 'eval' cannot be registered with register_shutdown_function, but shell_exec can - thus adding register_shutdown_function here, also samae goes for call_user_func and call_user_func_array :D - what about set_error_handler and set_exception_handler? what about UI Execution scheduler?
+my @ssti_vulnerable_functions=('render','assign','display'); # render() for TWIG, assign() and display() for Smarty
 ## List of sanitizing and checking functions, which use on user supplied input decreases probability of found security issue
 my @filtering_functions=('preg_replace','ereg_replace','eregi_replace','str_replace','strtr', 'str_ireplace','substr_replace');
 ## Universal sanitation functions
@@ -51,7 +52,7 @@ my @xss_filtering_functions=('htmlspecialchars', 'htmlentities');
 my @sql_filtering_functions=('addslashes', 'mysql_escape_string', 'mysql_real_escape_string');
 my @sql_num_filtering_functions=('int','settype','intval','(int)','(float)');  # commented out 'prepare', moving it to vuln functions - as this solely depends on in WHAT argument the user-supplied value lands, so we now favor false positives
 
-my @final_call_vulnerable_keys=('xss','sql','exec','shell','fopen','eval','upload'); 
+my @final_call_vulnerable_keys=('xss','sql','exec','shell','fopen','eval','upload','ssti'); 
 ## filtered_groups array is used for merging between namespaces
 my @filtered_groups=('xss','sql','exec','shell','sql_filtered','sql_num_checked','sql_num_filtered','array_checked','universal_checked','universal_filtered');
 
@@ -70,7 +71,7 @@ $final_secure_keys_relation{'shell'}={'shell'=>1,'array_checked'=>4,'universal_c
 $final_secure_keys_relation{'fopen'}={'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
 $final_secure_keys_relation{'eval'}={'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
 $final_secure_keys_relation{'upload'}={'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
-
+$final_secure_keys_relation{'ssti'}={'array_checked'=>4,'universal_checked'=>1,'universal_filtered'=>1};
 # [DATA TRACKING VARIABLES]
 # namespace
 my @tracked_superglobals=('\$_GET', '\$_POST', '\$_COOKIE', '\$_SERVER', '\$_REQUEST', '\$_FILES', '\$HTTP_COOKIE_VARS', '\$HTTP_SERVER_VARS', '\$HTTP_RAW_POST_DATA', '\$HTTP_ENV_VARS', '\$_SESSION', '\$HTTP_SESSION_VARS', '\$HTTP_POST_FILES', '\$HTTP_POST_VARS', '\$HTTP_GET_VARS'); # \$_SESSION, some SERVER VARS for http headers, on which user can influent
@@ -141,7 +142,7 @@ my $assignment_preg='^'.$variable_preg.'([\.\+\*-\/]?)\s*=([^;]*)';
 sub logme 
 {
 	my $outline = shift;
-	if($outline=~/^\[((XSS)|(SQL)|(RFI)|(LFI)|(EXEC)|(EVAL)|(SHELL)|(FOPEN)|(UPLOAD))/)
+	if($outline=~/^\[((XSS)|(SQL)|(RFI)|(LFI)|(EXEC)|(EVAL)|(SHELL)|(FOPEN)|(UPLOAD)|(SSTI))/)
 	{
 			if($outline=~/-TENTATIVE/)
 			{
@@ -1344,7 +1345,8 @@ sub parse_expression
 			 			## [EVAL]
 			 			&set_final_call_vulnerable('eval',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@eval_vulnerable_functions"));
 			 			## [UPLOAD]
-			 			&set_final_call_vulnerable('upload',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@upload_vulnerable_functions"));						
+			 			&set_final_call_vulnerable('upload',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@upload_vulnerable_functions"));			## [SSTI]
+			 			&set_final_call_vulnerable('ssti',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@ssti_vulnerable_functions"));						
 			 			### END OF FLAW DETECTING SECTION, END OF CURRENT LINE TRACKING SECTION				  	  	
 						### END OF CURRENT NEW CORE
 					}	### END OF  USER_DEFINED/NATIVE ALTERNATIVE BLOCK					
@@ -1550,7 +1552,7 @@ sub calculate_bugs
 			 {
 				## iterate over all final call ocurrences, not just one
 				for(my $i=0;$i<scalar(@{$final_call_vulnerable{$bug_group}{$variable_address}});$i++)
-				{						
+				{
 					next if($final_call_vulnerable{$bug_group}{$variable_address}[$i]{'is_tainted'} eq 0);
 			 		$vuln_line_external=$final_call_vulnerable{$bug_group}{$variable_address}[$i]{'mapped_from_vline'}; 	
 			 		$vuln_line_internal	=$final_call_vulnerable{$bug_group}{$variable_address}[$i]{'mapped_to_vline'}; 
