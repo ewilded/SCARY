@@ -1300,7 +1300,13 @@ sub parse_expression
 			 			## [SQL]
 						&set_final_call_vulnerable('sql',$params_tracked_variable,$curr_local_virtual_line_number,'','',$line_copy,$registered_variables_trace{$params_tracked_variable},$is_tainted) if(&in_array($called_function,"@sql_vulnerable_functions")); #
 			 			my $nullbyte_required=1; 
-						$nullbyte_required=0 if($last_resolved_path=~/$variable_preg$/);					 
+						# so, we have a bug here - sometimes this is reported even though it's not true
+						
+						my $param_quote_stripped=$curr_call_param;
+						$param_quote_stripped=~s/^"|'//g;
+						$param_quote_stripped=~s/"|'$//g;
+						$nullbyte_required=0 if($param_quote_stripped=~/$variable_preg$/);
+						#&logme("[DEBUG] LAST_RESOLVED_PATH: $curr_call_param, $param_quote_stripped, nullbyte_required: $nullbyte_required");					 
 						if(&in_array($called_function,"@exec_vulnerable_functions"))
 			 			{
 			 				## [INCLUDE/REQUIRE] (also the actual parser require logic is embedded here, since we changed behaviour of curr_line_tracked variable)
