@@ -59,7 +59,7 @@ my @php_predefined_constants=('PHP_VERSION','PHP_MAJOR_VERSION', 'PHP_MINOR_VERS
 'PHP_EXTRA_VERSION', 'PHP_ZTS', 'PHP_DEBUG', 'PHP_MAXPATHLEN', 'PHP_OS', 'PHP_SAPI', 'PHP_EOL', 'PHP_INT_MAX', 'PHP_INT_SIZE', 'DEFAULT_INCLUDE_PATH', 'PEAR_INSTALL_DIR', 'PEAR_EXTENSION_DIR', 'PHP_EXTENSION_DIR', 'PHP_PREFIX', 'PHP_BINDIR', 'PHP_BINARY', 'PHP_MANDIR', 'PHP_LIBDIR', 'PHP_DATADIR', 'PHP_SYSCONFDIR', 'PHP_LOCALSTATEDIR', 'PHP_CONFIG_FILE_PATH', 'PHP_CONFIG_FILE_SCAN_DIR', 'PHP_SHLIB_SUFFIX','E_ERROR', 'E_WARNING', 'E_PARSE', 'E_NOTICE', 'E_CORE_ERROR', 'E_CORE_WARNING', 'E_COMPILE_ERROR', 'E_COMPILE_WARNING', 'E_USER_ERROR', 'E_USER_WARNING', 'E_USER_NOTICE', 'E_DEPRECATED', 'E_USER_DEPRECATED', 'E_ALL', 'E_STRICT', '__COMPILER_HALT_OFFSET__', 'TRUE',
 'FALSE', 'NULL','true','false','null','__CLASS__', '__DIR__', '__FILE__', '__FUNCTION__', '__LINE__', '__METHOD__', '__NAMESPACE__', '__TRAIT__');
 my @php_builtins=('__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'callable', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'unset', 'use', 'var', 'while', 'xor');
-my @php_funcion_like_language_constructs=('return','require','require_once','print','include_once','include','echo','die','exit','eval','global'); ## this list is used to replace parenthesis-less calls to ones with parenthesis to simplify the parsing process (these are functions (or rather 'procedures') from our point of view)
+my @php_function_like_language_constructs=('return','require','require_once','print','include_once','include','echo','die','exit','eval','global'); ## this list is used to replace parenthesis-less calls to ones with parenthesis to simplify the parsing process (these are functions (or rather 'procedures') from our point of view)
 ## among all those language constructs, there are few that work as functions but are not functions
 ## Bellow hash contains relations between final_call_vulnerable keys (vulnerable calls) and corresponing groups of functions that can secure them along with the certainty rate (with higher value meaning most secure))
 my %final_secure_keys_relation=();
@@ -197,6 +197,16 @@ sub in_array
 	foreach my $row(@arr) 
 	{
 		 return 1 if($row eq $seed);
+	}
+	return 0;
+}
+sub in_array_ci #	case-insensitive variant 
+{
+	my $seed=shift;
+	my @arr=split(/\s/,shift);
+	foreach my $row(@arr) 
+	{
+		 return 1 if($row=~/^$seed$/i);
 	}
 	return 0;
 }
@@ -641,12 +651,12 @@ sub parse_line
 	my $line_number=shift;
  	### Here are all fucking 'language constructs' that acting like functions called without parenthesis, we replace them to parenthesis form, as they should be  
 	# remember to use $line_copy in the original report instead of $code
-	my $fucked_construct=join("|",@php_funcion_like_language_constructs);
+	my $fucked_construct=join("|",@php_function_like_language_constructs);
 	my $check_preg='^('.$fucked_construct.')\s+[^\(]';
 	my $fix_preg='^('.$fucked_construct.')\s+';
-   if($line=~/$check_preg/)
+   if($line=~/$check_preg/i)
    {
-   	$line=~s/$fix_preg/$1\(/;
+   	$line=~s/$fix_preg/$1\(/i;
    	$line=~s/;$/\);/;
    }
 	# backtick support
@@ -709,7 +719,7 @@ sub parse_expression
 	$code=~s/^\s*//;
 	$code=~s/\s*$//;
 	$code=~s/^;*$//; ## remove white characters and semicolons left from parent-call after subst, probably we'll rewrite it later anyway (added ^ dash at 15.11.2012 to learn it to catch interface definitions
-	$code=~s/^\.?//g; ## optional concatenation dot (remember to check how assignment value supports concatenation to avoid collision
+	$code=~s/^\.?//g; ## optional concatenation dot (remember to check how assignment value supports concatenation to avoid collision)
 	$code=~s/^\s*//;
 	$code=~s/\s*$//;
 	if(!$code) { $nested_expressions--; return '';} ## return empty on empty
@@ -722,9 +732,9 @@ sub parse_expression
 	my $last_resolved_path;
 	#&logme("[EXPRESSION] code:$code\n[EXPRESSION] left_side:$left_side"); 	
 	my $return_met=0;
-	if($code=~/^\s*return\s*/&&scalar(@function_define_trace)>0) 
+	if($code=~/^\s*return\s*/i&&scalar(@function_define_trace)>0) 
 	{
-		$code=~s/^\s*return\s*//;
+		$code=~s/^\s*return\s*//i;
 		if($code=~/^\s*\(/)
 		{
 			$code=~s/^\s*\(\s*//;
@@ -746,11 +756,11 @@ sub parse_expression
 	## IF/WHILE/FOR/SWITCH STATEMENTS NOT IMPLEMENTED
 	
 	## FUNCTIONS DEFINITIONS DETECTION (FUNCTIONS REGISTRATION)
-	if($code=~/$function_def_preg/)
+	if($code=~/$function_def_preg/i)
 	{
 		my $declaration_only=0; # introduction to tolerate interfaces (object code)
 		my $def_operation='DEFINITION';
-		if($code=~/$function_dec_preg/)
+		if($code=~/$function_dec_preg/i)
 		{
 			$def_operation='DECLARATION';
 			$declaration_only=1; 
@@ -812,11 +822,11 @@ sub parse_expression
 		}
 		if($declaration_only)
 		{
-			$code=~s/$function_dec_preg//;
+			$code=~s/$function_dec_preg//i;
 		}
 		else
 		{
-			$code=~s/$function_def_preg//;
+			$code=~s/$function_def_preg//i;
 		}
 		$return_expr=$comma.&parse_expression($code,$left_side); 
 		$nested_expressions--; 
@@ -885,21 +895,20 @@ sub parse_expression
 			## with non bracket calls support constant expressions started to get here too
 			#print "HOW THE FUCK $code is an f call?\n";
 			my $match=$&; ## HERE'S THE WHOLE INTERNAL EXPRESSION (THE FUCKING THING BETWEEN THE PARENTHESIS)
-			my $called_function;
+			my $called_function=lc($1); # lc - case insensitivity support
+			my $call_params=$2;
+			my $call_params_matchoff=$2;
 			if($registered_functions{&resolve_full_variable_namespace_path($1)})
 			{
-				$called_function=&resolve_full_variable_namespace_path($1);	
+				$called_function=&resolve_full_variable_namespace_path($called_function);	
 			}
-			else
-			{
-				$called_function=$1;
-			}
+			#else
+			#{
+			#	$called_function=$1;
+			#}
 			## end of checkups
 			#&logme("[CALL] $1 (preg:$function_call_preg)detected (curr_line_tracked:$curr_line_tracked), left_side: $left_side") if($debug_config{'CALL'});				
-			my $call_params=$2;
-			
-					
-			my $call_params_matchoff=$2;
+
 			my $call_params='';
 			my $bracket_count=0;
 			my $bracket_met=0;
@@ -934,7 +943,7 @@ sub parse_expression
 			## for each iteration after commas separation we need to estimate curr_line_tracked state again
 			#if($curr_line_tracked) ## also internal, not neccesarily GLOBAL TRACKED variable, we just track it, cause it comes from parameters and we wait to merge it
 			#{
-		 		push(@called_functions,$called_function) if(!&in_array($called_function,"@called_functions"));
+		 		push(@called_functions,$called_function) if(!&in_array_ci($called_function,"@called_functions"));
 		 		push(@call_trace,$called_function);
 		 		&logme("[CALL-TRACED] function:$called_function, params: $call_params, left side: $left_side") if($debug_config{'CALL'});
 		 		my @parsed_call_params=();
@@ -1348,7 +1357,7 @@ sub parse_expression
 		{
 			if(!&in_array($return_expr,"@php_predefined_constants")&&!($return_expr=~/^\d+$/))
 			{
-				&logme("[WARNING] unknown constant $return_expr met at $file:$line_number ($line_copy).\n") if(!&in_array($return_expr,"@php_builtins")&&$debug_config{'WARNING'});
+				&logme("[WARNING] unknown constant $return_expr met at $file:$line_number ($line_copy).\n") if(!&in_array(lc($return_expr),"@php_builtins")&&$debug_config{'WARNING'});
 				$inset_const=$return_expr; ##
 			}
 			else
