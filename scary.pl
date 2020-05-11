@@ -902,12 +902,8 @@ sub parse_expression
 			{
 				$called_function=&resolve_full_variable_namespace_path($called_function);	
 			}
-			#else
-			#{
-			#	$called_function=$1;
-			#}
 			## end of checkups
-			#&logme("[CALL] $1 (preg:$function_call_preg)detected (curr_line_tracked:$curr_line_tracked), left_side: $left_side") if($debug_config{'CALL'});				
+			&logme("[CALL] $1 (preg:$function_call_preg)detected (curr_line_tracked:$curr_line_tracked), left_side: $left_side") if($debug_config{'CALL'});				
 
 			my $call_params='';
 			my $bracket_count=0;
@@ -938,6 +934,26 @@ sub parse_expression
 				$call_params=~s/\)\s*$//;
 			}
 			$call_params=~s/\s*!\s*//g; ## remove white chars and negations
+			
+			# This is a good spot to introduce support for foreach.
+			# From the parser's perspective it's easiest to simply replace it with a fake assignment and parse it that way, e.g. replace 'foreach($paths as $path)' with '$paths=$path;'
+			if($called_function eq 'foreach')
+			{			
+				$code=~s/^\s*foreach\s*\(//i; # we remove the first (and hopefully the only) instance of foreach from the code
+				$code=~s/\s*\)/;/;
+				my @foreach_params=split(/\s+as\s+/i,$call_params);
+				if(scalar(@foreach_params) ne 2)
+				{
+					&logme("[ERROR] Failed to parse arguments for foreach: $call_params") if($debug_config{'ERROR'});
+				}
+				else
+				{
+					$call_params=$foreach_params[1].'='.$foreach_params[0];					
+				}
+				$return_expr=&parse_expression("$call_params"); # 
+				$nested_expressions--;
+				return $return_expr;
+			}
 			$prev_called_function=$called_function;
 			## ADD REFERENCE SUPPORT HERE - > THIS IMPACTS THE LEFT_SIDE BEHAVIOUR
 			## for each iteration after commas separation we need to estimate curr_line_tracked state again
@@ -1082,7 +1098,7 @@ sub parse_expression
 				  	#print "CALLED FUNCTION: $called_function\n";
 					if($registered_functions{$called_function} ne undef)	### user-defined function call detected
 					{
-						#&logme("USER-DEFINED FUNCTION $called_function CALL DETETCED!");
+						&logme("USER-DEFINED FUNCTION $called_function CALL DETETCED!") if($debug_config{'CALL'});
 				  		if($type_matched eq SUPERGLOBAL)
 				  		{
 							  	&logme("[WARNING] - direct call to $1 superglobal found - sanitizing function?") if($debug_config{'WARNING'});
@@ -1218,6 +1234,7 @@ sub parse_expression
 										push(@{$registered_functions{&get_curr_func_name()}{'globals'}},$1) if($curr_call_param=~/^$variable_preg/);
 									}
 								}
+								default : { &logme("[DEBUG] Unrecognized function call: $called_function") if($debug_config{'RESOLVE'}); } # this can easily be turned into reporting/detecting unknown functions with tainted args
 						}
 					## FIRST, SECURE CALLS TRACING
 					## IN THE FIRST PLACE, FLAW SPECIFIC 
