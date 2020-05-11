@@ -471,13 +471,13 @@ sub register_variable
 				case '/' 
 				{ 
 					$val=~s/^\s*//; $val=~s/\s*$//;
-					if($val eq ''||$val eq 0)
+					if($val=~/^\d+$/&&$val ne 0)
 					{
-						 $registered_variables{$resolved_varname}=0;
+						$registered_variables{$resolved_varname}/=$val;
 					}
 					else
-					{ 
-						$registered_variables{$resolved_varname}/=$val;
+					{
+						$registered_variables{$resolved_varname}='';
 					} 
 				}
 				case '*' { $registered_variables{$resolved_varname}*=$val; } 
