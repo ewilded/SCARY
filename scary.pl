@@ -13,7 +13,7 @@ use Term::ANSIColor;
 
 my $version='current';
 ## CONFIG
-my $max_nested_expressions=30;
+my $max_nested_expressions=50;
 my $max_nested_includes=10;
 ## output configuration
 my %debug_config;
